@@ -20,14 +20,23 @@
         }
         .sticky-col-nama {
             position: sticky;
-            left: 35px;
+            left: 36px;
             background-color: #2563eb;
             color: white;
             z-index: 20;
         }
-        tbody td.sticky-col-no, tbody td.sticky-col-nama {
+        tbody td.sticky-col-no {
+            position: sticky;
+            left: 0;
             background-color: white;
-            color: inherit;
+            color: #374151;
+            z-index: 10;
+        }
+        tbody td.sticky-col-nama {
+            position: sticky;
+            left: 36px;
+            background-color: white;
+            color: #111827;
             z-index: 10;
         }
     </style>
@@ -157,8 +166,11 @@
         <!-- TAB: IURAN -->
         <div id="tab-iuran" class="p-4 hidden space-y-4">
             <div class="flex justify-between items-center">
-                <h2 class="text-lg font-bold">Laporan Iuran Anggota</h2>
-                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-bold" id="total-anggota-count">0 Anggota</span>
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">Laporan Iuran</h2>
+                    <p class="text-xs text-gray-500">Data pembayaran iuran anggota</p>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold" id="total-anggota-count">0 Anggota</span>
             </div>
 
             <!-- Form Kelola Anggota (Khusus Admin) -->
@@ -170,28 +182,28 @@
                 </div>
             </div>
 
-            <!-- Tabel Iuran -->
+            <!-- Tabel Iuran Style screenshot -->
             <div class="overflow-x-auto bg-white rounded-xl shadow border">
                 <table class="w-full text-left text-xs border-collapse">
                     <thead class="bg-blue-600 text-white">
                         <tr id="tabel-iuran-header">
-                            <th class="p-2.5 border-b border-blue-500 text-center sticky-col-no w-8">No</th>
-                            <th class="p-2.5 border-b border-blue-500 sticky-col-nama min-w-[130px]">Nama</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Jan</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Feb</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Mar</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Apr</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Mei</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Jun</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Jul</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Ags</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Sep</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Okt</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Nov</th>
-                            <th class="p-2 border-b border-blue-500 text-center min-w-[50px] font-semibold">Des</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center sticky-col-no w-9 font-semibold">No</th>
+                            <th class="p-2.5 border-b border-blue-500 sticky-col-nama min-w-[130px] font-semibold">Nama</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Jan</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Feb</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Mar</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Apr</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Mei</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Jun</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Jul</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Ags</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Sep</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Okt</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Nov</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[65px] font-semibold">Des</th>
                         </tr>
                     </thead>
-                    <tbody id="tabel-iuran-body" class="divide-y">
+                    <tbody id="tabel-iuran-body" class="divide-y divide-gray-100">
                         <!-- Dynamic Content -->
                     </tbody>
                 </table>
@@ -357,28 +369,28 @@
         </div>
 
         <!-- BOTTOM NAVIGATION -->
-        <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t flex justify-around items-center py-2 text-xs text-gray-500 z-40">
+        <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t flex justify-around items-center py-2 text-xs text-gray-500 z-40 shadow-lg">
             <button onclick="switchTab('beranda')" id="btn-beranda" class="flex flex-col items-center active-tab">
                 <i class="fas fa-home text-lg"></i>
-                <span>Beranda</span>
+                <span class="text-[10px]">Beranda</span>
             </button>
             <button onclick="switchTab('iuran')" id="btn-iuran" class="flex flex-col items-center">
                 <i class="fas fa-th-large text-lg"></i>
-                <span>Iuran</span>
+                <span class="text-[10px]">Iuran</span>
             </button>
             <button onclick="switchTab('lapor')" id="btn-lapor" class="flex flex-col items-center -mt-5">
-                <div class="bg-blue-600 text-white p-3 rounded-full shadow-lg">
+                <div class="bg-blue-600 text-white p-3 rounded-full shadow-lg border-2 border-white">
                     <i class="fas fa-file-medical text-xl"></i>
                 </div>
-                <span class="mt-1 font-bold text-blue-600">Lapor</span>
+                <span class="mt-1 font-bold text-blue-600 text-[10px]">Lapor</span>
             </button>
             <button onclick="switchTab('kas')" id="btn-kas" class="flex flex-col items-center">
                 <i class="fas fa-chart-bar text-lg"></i>
-                <span>Kas</span>
+                <span class="text-[10px]">Kas</span>
             </button>
             <button onclick="switchTab('kegiatan')" id="btn-kegiatan" class="flex flex-col items-center">
                 <i class="fas fa-book text-lg"></i>
-                <span>Kegiatan</span>
+                <span class="text-[10px]">Kegiatan</span>
             </button>
         </div>
 
@@ -802,26 +814,32 @@
             const saldoAkhir = totalIuranTahunIni - totalPengeluaranTahunIni - totalDansosTahunIni;
             document.getElementById('total-saldo-display').innerText = `Rp ${saldoAkhir.toLocaleString('id-ID')}`;
 
-            // Render Tabel Iuran
+            // Render Tabel Iuran persis seperti UI Screenshot
             const tbodyIuran = document.getElementById('tabel-iuran-body');
             tbodyIuran.innerHTML = '';
 
             anggotaList.sort().forEach((nama, idx) => {
-                let rowHtml = `<tr>
-                    <td class="p-2 border-b text-center sticky-col-no">${idx + 1}</td>
-                    <td class="p-2 border-b font-medium sticky-col-nama">${nama}</td>`;
+                let rowHtml = `<tr class="hover:bg-gray-50 transition">
+                    <td class="p-2.5 border-b text-center sticky-col-no font-medium text-gray-500">${idx + 1}</td>
+                    <td class="p-2.5 border-b font-medium text-gray-800 sticky-col-nama">${nama}</td>`;
 
                 bulanList.forEach(b => {
                     const isPaid = yearIuranData[nama] && yearIuranData[nama][b];
                     if(isPaid) {
                         const info = yearIuranData[nama][b];
                         rowHtml += `
-                            <td class="p-2 border-b text-center bg-emerald-50 text-emerald-600 font-bold">
-                                <span class="cursor-pointer" onclick="${info.bukti ? `showBukti('${info.bukti}', 'Iuran ${nama} (${b} ${selectedYear})')` : ''}" title="Rp ${info.nominal.toLocaleString('id-ID')}">✓</span>
-                                ${currentRole === 'admin' ? `<button onclick="hapusIuranSelesai('${selectedYear}', '${nama}', '${b}')" class="text-red-500 ml-1 text-[10px]">&times;</button>` : ''}
+                            <td class="p-2 border-b text-center align-middle">
+                                <div class="inline-flex flex-col items-center justify-center">
+                                    <span class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs shadow-sm">✓</span>
+                                    ${info.bukti ? `<button onclick="showBukti('${info.bukti}', 'Bukti ${nama} (${b} ${selectedYear})')" class="text-[10px] text-blue-600 hover:underline mt-0.5 font-medium">Bukti</button>` : ''}
+                                    ${currentRole === 'admin' ? `<button onclick="hapusIuranSelesai('${selectedYear}', '${nama}', '${b}')" class="text-red-400 hover:text-red-600 text-[9px] mt-0.5">Hapus</button>` : ''}
+                                </div>
                             </td>`;
                     } else {
-                        rowHtml += `<td class="p-2 border-b text-center text-gray-300">-</td>`;
+                        rowHtml += `
+                            <td class="p-2 border-b text-center text-gray-300 align-middle">
+                                <span class="font-normal text-gray-300 tracking-tighter">—</span>
+                            </td>`;
                     }
                 });
 
