@@ -29,9 +29,9 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 bg-gradient-to-b from-blue-600 to-blue-800 z-50 flex flex-col items-center justify-center p-4">
         <div class="text-center text-white mb-6">
-            <!-- LOGO FAMILY GATHERING WHEEL SECTION -->
-            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg overflow-hidden border-2 border-white">
-                <img src="logo.png" alt="Logo Wheel Section" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150?text=Logo+Wheel'">
+            <!-- LOGO BARU GATHERING WHEEL -->
+            <div class="w-28 h-28 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg overflow-hidden border-2 border-white p-1">
+                <img src="logo.png" alt="Logo Wheel Section" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Logo+Wheel'">
             </div>
             <h1 class="text-2xl font-bold">Keluarga Besar Wheel</h1>
             <p class="text-sm opacity-80">Family Gathering Wheel Section</p>
@@ -58,6 +58,26 @@
         </div>
     </div>
 
+    <!-- MODAL GANTI PASSWORD -->
+    <div id="modal-ganti-pass" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-xl relative">
+            <button onclick="closeModalPass()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-lg">&times;</button>
+            <h3 class="font-bold text-gray-800 text-sm mb-3"><i class="fas fa-key mr-1 text-blue-600"></i> Ganti Password <span id="label-role-pass"></span></h3>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Password Lama</label>
+                    <input type="password" id="pass-lama-input" placeholder="••••••••" class="w-full p-2 border rounded-lg text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Password Baru</label>
+                    <input type="password" id="pass-baru-input" placeholder="••••••••" class="w-full p-2 border rounded-lg text-xs">
+                </div>
+                <button onclick="simpanPasswordBaru()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold">Simpan Password Baru</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL BUKTI TRANSFER & FOTO KEGIATAN -->
     <div id="modal-bukti" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-xl relative">
@@ -77,15 +97,18 @@
         <div class="bg-blue-600 text-white p-4 rounded-b-2xl shadow-lg">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-full overflow-hidden border border-white">
-                        <img src="logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150?text=Logo'">
+                    <div class="w-10 h-10 bg-slate-900 rounded-full overflow-hidden border border-white p-0.5">
+                        <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Logo'">
                     </div>
                     <div>
                         <h1 class="text-lg font-bold leading-tight">Keluarga Besar Wheel</h1>
                         <p class="text-[10px] text-blue-200">Family Gathering Wheel Section</p>
                     </div>
                 </div>
-                <button onclick="logout()" title="Keluar" class="bg-red-500 p-2 rounded-lg text-xs hover:bg-red-600"><i class="fas fa-sign-out-alt"></i></button>
+                <div class="flex space-x-1">
+                    <button onclick="openModalPass()" title="Ganti Password" class="bg-yellow-500 p-2 rounded-lg text-xs hover:bg-yellow-600 text-white font-bold"><i class="fas fa-key"></i></button>
+                    <button onclick="logout()" title="Keluar" class="bg-red-500 p-2 rounded-lg text-xs hover:bg-red-600"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
             </div>
             <div class="flex justify-between items-center text-xs text-blue-100 mt-2">
                 <p>Status: <b id="user-role-label" class="capitalize">Anggota</b></p>
@@ -120,7 +143,8 @@
             <div class="grid grid-cols-2 gap-3">
                 <div class="bg-blue-600 text-white p-3 rounded-2xl">
                     <p class="text-xs">Bayar Bulan Ini</p>
-                    <p class="text-xl font-bold mt-1" id="stat-bayar-bulan">0 / 0 <span class="text-xs font-normal">kk</span></p>
+                    <!-- Satuan diubah menjadi anggota -->
+                    <p class="text-xl font-bold mt-1" id="stat-bayar-bulan">0 / 0 <span class="text-xs font-normal">anggota</span></p>
                 </div>
                 <div class="bg-purple-600 text-white p-3 rounded-2xl">
                     <p class="text-xs">Iuran Bulan Ini</p>
@@ -168,7 +192,6 @@
                         <tr id="tabel-iuran-header">
                             <th class="p-2 border-b">No</th>
                             <th class="p-2 border-b sticky-col">Nama</th>
-                            <!-- Bulan Jan - Des akan diproduksi otomatis -->
                         </tr>
                     </thead>
                     <tbody id="tabel-iuran-body" class="divide-y">
@@ -186,16 +209,19 @@
                     <label class="text-xs font-semibold text-gray-600">Pilih Nama Anggota</label>
                     <select id="input-nama" required class="w-full p-2 border rounded-lg text-sm"></select>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">Nominal (Rp)</label>
-                        <input type="number" id="input-nominal" value="50000" required class="w-full p-2 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">Bulan</label>
-                        <select id="input-bulan" class="w-full p-2 border rounded-lg text-sm"></select>
+                <div>
+                    <label class="text-xs font-semibold text-gray-600">Nominal Per Bulan (Rp)</label>
+                    <input type="number" id="input-nominal" value="50000" required class="w-full p-2 border rounded-lg text-sm">
+                </div>
+                
+                <!-- Pilihan Bulan Januari - Desember (Multiselect Checkbox) -->
+                <div>
+                    <label class="text-xs font-semibold text-gray-600 mb-1 block">Pilih Bulan (Bisa Lebih Dari Satu):</label>
+                    <div id="container-checkbox-bulan" class="grid grid-cols-3 gap-2 bg-gray-50 p-2.5 rounded-lg border max-h-40 overflow-y-auto">
+                        <!-- Dynamic Checkboxes -->
                     </div>
                 </div>
+
                 <div>
                     <label class="text-xs font-semibold text-gray-600">Upload Bukti Transfer</label>
                     <input type="file" id="input-file-bukti" accept="image/*" required class="w-full text-xs p-2 border rounded-lg">
@@ -328,7 +354,7 @@
                     <label class="block text-[10px] text-gray-500 mb-1">Foto Kegiatan (Opsional)</label>
                     <input type="file" id="input-foto-kegiatan" accept="image/*" class="w-full text-xs p-1 border rounded-lg">
                 </div>
-                <button onclick="tambahKegiatan()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-xs">Simpan & Publication</button>
+                <button onclick="tambahKegiatan()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-xs">Simpan & Publikasikan</button>
             </div>
 
             <!-- Riwayat Kegiatan List -->
@@ -369,7 +395,6 @@
     </div>
 
     <script>
-        // Data Awal Anggota
         const defaultAnggota = [
             "Abdillah Zaqi", "Ade S", "Agus Winarno", "Akhmad Nurrokhim", "Alfa", "Amin S", "Ananta", "Anjasmara", 
             "Apriyanto", "Arief W", "Asep S", "Bayu E.", "Beni", "Carmuto", "Diki R", "Dodi Eka S", "Erik", "Erwin", 
@@ -383,46 +408,50 @@
 
         const bulanList = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-        // State & LocalStorage Management
         let anggotaList = JSON.parse(localStorage.getItem('anggotaList')) || defaultAnggota;
         let passAnggota = localStorage.getItem('passAnggota') || '12345';
-        let passAdmin = 'Mo12345'; // Password Admin Diperbarui
+        let passAdmin = localStorage.getItem('passAdmin') || 'Mo12345';
         let currentRole = '';
 
         let iuranData = JSON.parse(localStorage.getItem('iuranData')) || {}; 
         let laporanPending = JSON.parse(localStorage.getItem('laporanPending')) || [];
         let pengeluaranList = JSON.parse(localStorage.getItem('pengeluaranList')) || [];
         let danaSosialList = JSON.parse(localStorage.getItem('danaSosialList')) || [];
+        
+        // Judul Kegiatan diubah jadi "Silaturahmi" (Arisan dihapus)
         let kegiatanList = JSON.parse(localStorage.getItem('kegiatanList')) || [
             {
                 id: 1,
-                judul: "Silaturahmi & Arisan Rutin",
+                judul: "Silaturahmi",
                 tgl: "2026-07-01",
-                desc: "Dokumentasi kegiatan dan notulensi rapat warga diperbarui berkala.",
+                desc: "Dokumentasi kegiatan dan notulensi rapat warga diperbarui secara berkala.",
                 foto: ""
             }
         ];
 
-        // Dynamic Year Initialization (Up to 2050)
         const currentYear = new Date().getFullYear();
         let selectedYear = currentYear;
 
-        function initYears() {
+        function initYearsAndMonths() {
             const selectFilter = document.getElementById('filter-tahun');
             selectFilter.innerHTML = '';
-            // Generate tahun sampai 2050
             for(let y = currentYear - 2; y <= 2050; y++) {
                 selectFilter.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
             }
             document.querySelectorAll('.current-year-txt').forEach(el => el.innerText = currentYear);
 
-            const selectBulan = document.getElementById('input-bulan');
-            selectBulan.innerHTML = '';
+            // Populate Checkbox Bulan Laporan (Jan - Des)
+            const boxContainer = document.getElementById('container-checkbox-bulan');
+            boxContainer.innerHTML = '';
             bulanList.forEach(b => {
-                selectBulan.innerHTML += `<option value="${b}">${b}</option>`;
+                boxContainer.innerHTML += `
+                    <label class="flex items-center space-x-1.5 text-xs text-gray-700 font-medium cursor-pointer">
+                        <input type="checkbox" name="bulan_lapor" value="${b}" class="rounded text-blue-600 focus:ring-blue-500">
+                        <span>${b}</span>
+                    </label>
+                `;
             });
 
-            // Set Tanggal Input Kegiatan ke Hari Ini
             document.getElementById('input-tgl-kegiatan').valueAsDate = new Date();
         }
 
@@ -443,7 +472,7 @@
             document.getElementById('app').classList.remove('hidden');
             document.getElementById('user-role-label').innerText = currentRole;
             
-            initYears();
+            initYearsAndMonths();
             updateAllData();
         }
 
@@ -453,11 +482,42 @@
             document.getElementById('app').classList.add('hidden');
         }
 
+        // Fitur Modal & Ganti Password
+        function openModalPass() {
+            document.getElementById('label-role-pass').innerText = `(${currentRole.toUpperCase()})`;
+            document.getElementById('pass-lama-input').value = '';
+            document.getElementById('pass-baru-input').value = '';
+            document.getElementById('modal-ganti-pass').classList.remove('hidden');
+        }
+
+        function closeModalPass() {
+            document.getElementById('modal-ganti-pass').classList.add('hidden');
+        }
+
+        function simpanPasswordBaru() {
+            const pwLama = document.getElementById('pass-lama-input').value;
+            const pwBaru = document.getElementById('pass-baru-input').value.trim();
+
+            if(!pwBaru) return alert('Password baru tidak boleh kosong!');
+
+            if(currentRole === 'anggota') {
+                if(pwLama !== passAnggota) return alert('Password lama salah!');
+                passAnggota = pwBaru;
+                localStorage.setItem('passAnggota', passAnggota);
+            } else {
+                if(pwLama !== passAdmin) return alert('Password lama salah!');
+                passAdmin = pwBaru;
+                localStorage.setItem('passAdmin', passAdmin);
+            }
+
+            alert('Password berhasil diperbarui!');
+            closeModalPass();
+        }
+
         function tambahAnggota() {
             const namaInput = document.getElementById('input-nama-anggota-baru');
             const nama = namaInput.value.trim();
             if(!nama) return alert('Masukkan nama!');
-
             if(anggotaList.includes(nama)) return alert('Nama sudah ada!');
 
             anggotaList.push(nama);
@@ -471,20 +531,33 @@
             e.preventDefault();
             const nama = document.getElementById('input-nama').value;
             const nominal = parseInt(document.getElementById('input-nominal').value);
-            const bulan = document.getElementById('input-bulan').value;
             const year = document.getElementById('filter-tahun').value;
             const fileInput = document.getElementById('input-file-bukti');
+
+            // Ambil seluruh bulan yang dicentang
+            const checkboxes = document.querySelectorAll('input[name="bulan_lapor"]:checked');
+            const selectedBulans = Array.from(checkboxes).map(cb => cb.value);
+
+            if(selectedBulans.length === 0) {
+                return alert('Pilih minimal satu bulan yang dibayar!');
+            }
 
             if(fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const buktiBase64 = e.target.result;
-                    const laporanBaru = { id: Date.now(), nama, nominal, bulan, tahun: year, bukti: buktiBase64 };
-                    laporanPending.push(laporanBaru);
+                    
+                    // Simpan laporan untuk setiap bulan yang dipilih
+                    selectedBulans.forEach(bln => {
+                        const laporanBaru = { id: Date.now() + Math.random(), nama, nominal, bulan: bln, tahun: year, bukti: buktiBase64 };
+                        laporanPending.push(laporanBaru);
+                    });
+
                     localStorage.setItem('laporanPending', JSON.stringify(laporanPending));
                     
-                    alert('Laporan berhasil dikirim ke Admin!');
+                    alert(`Laporan pembayaran ${selectedBulans.length} bulan berhasil dikirim ke Admin!`);
                     fileInput.value = '';
+                    checkboxes.forEach(cb => cb.checked = false);
                     switchTab('beranda');
                     updateAllData();
                 };
@@ -658,7 +731,8 @@
 
             // Update Dashboards
             document.getElementById('total-saldo-display').innerText = `Rp ${saldoAkhir.toLocaleString('id-ID')}`;
-            document.getElementById('stat-bayar-bulan').innerHTML = `${bayarBulanIniCount} / ${anggotaList.length} <span class="text-xs font-normal">kk</span>`;
+            // Penggunaan satuan 'anggota'
+            document.getElementById('stat-bayar-bulan').innerHTML = `${bayarBulanIniCount} / ${anggotaList.length} <span class="text-xs font-normal">anggota</span>`;
             document.getElementById('stat-iuran-bulan').innerText = `Rp ${totalIuranBulanIni.toLocaleString('id-ID')}`;
             document.getElementById('stat-total-iuran').innerText = `Rp ${totalIuranMasuk.toLocaleString('id-ID')}`;
             document.getElementById('stat-total-pengeluaran').innerText = `Rp ${(totalPengeluaran + totalDansos).toLocaleString('id-ID')}`;
@@ -679,7 +753,6 @@
                 document.getElementById('admin-dansos-form').classList.remove('hidden');
                 document.getElementById('admin-pengeluaran-form').classList.remove('hidden');
 
-                // Approval List
                 const container = document.getElementById('admin-laporan-list');
                 container.innerHTML = '';
                 if (laporanPending.length === 0) {
@@ -690,7 +763,7 @@
                             <div class="bg-white p-2.5 rounded-lg border flex justify-between items-center text-xs shadow-sm">
                                 <div>
                                     <p class="font-bold text-gray-800">${item.nama}</p>
-                                    <p class="text-gray-500">${item.bulan} ${item.tahun} - Rp ${item.nominal.toLocaleString('id-ID')}</p>
+                                    <p class="text-gray-500">Bulan ${item.bulan} ${item.tahun} - Rp ${item.nominal.toLocaleString('id-ID')}</p>
                                     ${item.bukti ? `<button onclick="showBuktiModal('${item.bukti}', '${item.nama}')" class="text-[10px] text-blue-600 underline">Lihat Bukti</button>` : ''}
                                 </div>
                                 <div class="flex space-x-1">
@@ -708,7 +781,6 @@
                 document.getElementById('admin-pengeluaran-form').classList.add('hidden');
             }
 
-            // Render Sub Tab Content & Kegiatan
             renderDanaSosialBody();
             renderPengeluaranBody();
             renderLaporanKasBody();
@@ -792,7 +864,6 @@
                 return;
             }
 
-            // Urutkan berdasarkan tanggal terbaru
             const sorted = kegiatanList.slice().sort((a, b) => new Date(b.tgl) - new Date(a.tgl));
 
             sorted.forEach(k => {
