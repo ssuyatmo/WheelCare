@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -29,11 +29,12 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 bg-gradient-to-b from-blue-600 to-blue-800 z-50 flex flex-col items-center justify-center p-4">
         <div class="text-center text-white mb-6">
-            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
-                <i class="fas fa-users text-4xl text-white"></i>
+            <!-- LOGO FAMILY GATHERING WHEEL SECTION -->
+            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg overflow-hidden border-2 border-white">
+                <img src="logo.png" alt="Logo Wheel Section" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150?text=Logo+Wheel'">
             </div>
             <h1 class="text-2xl font-bold">Keluarga Besar Wheel</h1>
-            <p class="text-sm opacity-80">Sistem Laporan Keuangan Keluarga</p>
+            <p class="text-sm opacity-80">Family Gathering Wheel Section</p>
         </div>
 
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl text-center">
@@ -57,13 +58,13 @@
         </div>
     </div>
 
-    <!-- MODAL BUKTI TRANSFER -->
+    <!-- MODAL BUKTI TRANSFER & FOTO KEGIATAN -->
     <div id="modal-bukti" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-xl relative">
             <button onclick="closeModalBukti()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-lg">&times;</button>
-            <h3 class="font-bold text-gray-800 text-sm mb-3"><i class="fas fa-receipt mr-1 text-blue-600"></i> Bukti Transfer</h3>
+            <h3 class="font-bold text-gray-800 text-sm mb-3"><i class="fas fa-image mr-1 text-blue-600"></i> Detail Gambar</h3>
             <div class="p-2 border rounded-xl bg-gray-50 text-center">
-                <img id="img-bukti-target" src="" alt="Bukti Transfer" class="max-h-96 mx-auto rounded-lg object-contain">
+                <img id="img-bukti-target" src="" alt="Bukti / Foto" class="max-h-96 mx-auto rounded-lg object-contain">
                 <p id="txt-bukti-ket" class="text-xs text-gray-600 mt-2 font-medium"></p>
             </div>
         </div>
@@ -75,18 +76,23 @@
         <!-- HEADER -->
         <div class="bg-blue-600 text-white p-4 rounded-b-2xl shadow-lg">
             <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-users text-2xl"></i>
-                    <h1 class="text-xl font-bold">Keluarga Besar Wheel</h1>
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full overflow-hidden border border-white">
+                        <img src="logo.png" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150?text=Logo'">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight">Keluarga Besar Wheel</h1>
+                        <p class="text-[10px] text-blue-200">Family Gathering Wheel Section</p>
+                    </div>
                 </div>
                 <button onclick="logout()" title="Keluar" class="bg-red-500 p-2 rounded-lg text-xs hover:bg-red-600"><i class="fas fa-sign-out-alt"></i></button>
             </div>
-            <div class="flex justify-between items-center text-xs text-blue-100">
+            <div class="flex justify-between items-center text-xs text-blue-100 mt-2">
                 <p>Status: <b id="user-role-label" class="capitalize">Anggota</b></p>
                 <div class="flex items-center space-x-1">
                     <span>Tahun:</span>
                     <select id="filter-tahun" onchange="updateAllData()" class="bg-blue-700 text-white text-xs rounded px-1 py-0.5 border border-blue-400">
-                        <!-- Auto Dynamic Years -->
+                        <!-- Dynamic Years up to 2050 -->
                     </select>
                 </div>
             </div>
@@ -198,7 +204,7 @@
             </form>
         </div>
 
-        <!-- TAB: KAS MENU (Sub-menu Kas) -->
+        <!-- TAB: KAS MENU -->
         <div id="tab-kas" class="p-4 space-y-4 hidden">
             
             <!-- Menu Navigasi Sub Kas -->
@@ -308,13 +314,29 @@
 
         </div>
 
-        <!-- TAB: KEGIATAN -->
-        <div id="tab-kegiatan" class="p-4 hidden space-y-3">
-            <h2 class="text-lg font-bold">Kegiatan Warga</h2>
-            <div class="bg-white p-3 rounded-xl shadow border text-xs">
-                <p class="font-bold text-blue-600">Silaturahmi & Arisan Rutin</p>
-                <p class="text-gray-400 text-[10px] mt-0.5">Setiap Awal Bulan</p>
-                <p class="mt-2 text-gray-700">Dokumentasi kegiatan dan notulensi rapat warga akan diperbarui di sini secara berkala.</p>
+        <!-- TAB: KEGIATAN ANGGOTA -->
+        <div id="tab-kegiatan" class="p-4 hidden space-y-4">
+            <h2 class="text-lg font-bold text-gray-800">Kegiatan Anggota</h2>
+
+            <!-- Form Upload Kegiatan -->
+            <div class="bg-white p-3 rounded-xl shadow border space-y-2">
+                <p class="text-xs font-bold text-blue-600"><i class="fas fa-plus-circle mr-1"></i> Upload Kegiatan Baru</p>
+                <input type="text" id="input-judul-kegiatan" placeholder="Judul Kegiatan..." class="w-full p-2 border rounded-lg text-xs">
+                <input type="date" id="input-tgl-kegiatan" class="w-full p-2 border rounded-lg text-xs">
+                <textarea id="input-desc-kegiatan" placeholder="Deskripsi atau Notulensi Kegiatan..." class="w-full p-2 border rounded-lg text-xs rows-2"></textarea>
+                <div>
+                    <label class="block text-[10px] text-gray-500 mb-1">Foto Kegiatan (Opsional)</label>
+                    <input type="file" id="input-foto-kegiatan" accept="image/*" class="w-full text-xs p-1 border rounded-lg">
+                </div>
+                <button onclick="tambahKegiatan()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-xs">Simpan & Publication</button>
+            </div>
+
+            <!-- Riwayat Kegiatan List -->
+            <div class="space-y-3">
+                <p class="text-xs font-bold text-gray-600"><i class="fas fa-history mr-1"></i> Riwayat Kegiatan</p>
+                <div id="list-riwayat-kegiatan" class="space-y-3">
+                    <!-- Dynamic List -->
+                </div>
             </div>
         </div>
 
@@ -347,7 +369,7 @@
     </div>
 
     <script>
-        // Data Awal 62 Anggota
+        // Data Awal Anggota
         const defaultAnggota = [
             "Abdillah Zaqi", "Ade S", "Agus Winarno", "Akhmad Nurrokhim", "Alfa", "Amin S", "Ananta", "Anjasmara", 
             "Apriyanto", "Arief W", "Asep S", "Bayu E.", "Beni", "Carmuto", "Diki R", "Dodi Eka S", "Erik", "Erwin", 
@@ -364,22 +386,32 @@
         // State & LocalStorage Management
         let anggotaList = JSON.parse(localStorage.getItem('anggotaList')) || defaultAnggota;
         let passAnggota = localStorage.getItem('passAnggota') || '12345';
-        let passAdmin = localStorage.getItem('passAdmin') || '12345';
+        let passAdmin = 'Mo12345'; // Password Admin Diperbarui
         let currentRole = '';
 
         let iuranData = JSON.parse(localStorage.getItem('iuranData')) || {}; 
         let laporanPending = JSON.parse(localStorage.getItem('laporanPending')) || [];
         let pengeluaranList = JSON.parse(localStorage.getItem('pengeluaranList')) || [];
         let danaSosialList = JSON.parse(localStorage.getItem('danaSosialList')) || [];
+        let kegiatanList = JSON.parse(localStorage.getItem('kegiatanList')) || [
+            {
+                id: 1,
+                judul: "Silaturahmi & Arisan Rutin",
+                tgl: "2026-07-01",
+                desc: "Dokumentasi kegiatan dan notulensi rapat warga diperbarui berkala.",
+                foto: ""
+            }
+        ];
 
-        // Auto Year Initialization
+        // Dynamic Year Initialization (Up to 2050)
         const currentYear = new Date().getFullYear();
         let selectedYear = currentYear;
 
         function initYears() {
             const selectFilter = document.getElementById('filter-tahun');
             selectFilter.innerHTML = '';
-            for(let y = currentYear - 2; y <= currentYear + 2; y++) {
+            // Generate tahun sampai 2050
+            for(let y = currentYear - 2; y <= 2050; y++) {
                 selectFilter.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
             }
             document.querySelectorAll('.current-year-txt').forEach(el => el.innerText = currentYear);
@@ -389,6 +421,9 @@
             bulanList.forEach(b => {
                 selectBulan.innerHTML += `<option value="${b}">${b}</option>`;
             });
+
+            // Set Tanggal Input Kegiatan ke Hari Ini
+            document.getElementById('input-tgl-kegiatan').valueAsDate = new Date();
         }
 
         function login() {
@@ -400,7 +435,7 @@
             } else if (role === 'admin' && inputPw === passAdmin) {
                 currentRole = 'admin';
             } else {
-                alert('Password salah! (Default: 12345)');
+                alert('Pasword sampean salah');
                 return;
             }
 
@@ -529,6 +564,34 @@
             }
         }
 
+        function tambahKegiatan() {
+            const judul = document.getElementById('input-judul-kegiatan').value.trim();
+            const tgl = document.getElementById('input-tgl-kegiatan').value;
+            const desc = document.getElementById('input-desc-kegiatan').value.trim();
+            const fileInput = document.getElementById('input-foto-kegiatan');
+
+            if(!judul || !tgl || !desc) return alert('Lengkapi judul, tanggal, dan deskripsi!');
+
+            const saveKegiatan = (fotoUrl = '') => {
+                kegiatanList.push({ id: Date.now(), judul, tgl, desc, foto: fotoUrl });
+                localStorage.setItem('kegiatanList', JSON.stringify(kegiatanList));
+
+                document.getElementById('input-judul-kegiatan').value = '';
+                document.getElementById('input-desc-kegiatan').value = '';
+                fileInput.value = '';
+                updateAllData();
+                alert('Kegiatan berhasil ditambahkan!');
+            };
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => saveKegiatan(e.target.result);
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveKegiatan('');
+            }
+        }
+
         function showBuktiModal(imgSrc, ketStr) {
             document.getElementById('img-bukti-target').src = imgSrc;
             document.getElementById('txt-bukti-ket').innerText = ketStr;
@@ -645,10 +708,11 @@
                 document.getElementById('admin-pengeluaran-form').classList.add('hidden');
             }
 
-            // Render Sub Tab Content
+            // Render Sub Tab Content & Kegiatan
             renderDanaSosialBody();
             renderPengeluaranBody();
             renderLaporanKasBody();
+            renderRiwayatKegiatan();
         }
 
         function renderDanaSosialBody() {
@@ -715,6 +779,39 @@
                         <td class="p-1.5 border text-right text-rose-600">-</td>
                         <td class="p-1.5 border text-right font-bold text-blue-600">Rp ${currentKasSaldo.toLocaleString('id-ID')}</td>
                     </tr>
+                `;
+            });
+        }
+
+        function renderRiwayatKegiatan() {
+            const container = document.getElementById('list-riwayat-kegiatan');
+            container.innerHTML = '';
+
+            if(kegiatanList.length === 0) {
+                container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Belum ada kegiatan tersimpan.</p>';
+                return;
+            }
+
+            // Urutkan berdasarkan tanggal terbaru
+            const sorted = kegiatanList.slice().sort((a, b) => new Date(b.tgl) - new Date(a.tgl));
+
+            sorted.forEach(k => {
+                const formattedDate = new Date(k.tgl).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                container.innerHTML += `
+                    <div class="bg-white p-3 rounded-xl shadow border text-xs space-y-2">
+                        <div class="flex justify-between items-start">
+                            <p class="font-bold text-blue-600 text-sm">${k.judul}</p>
+                            <span class="text-[10px] bg-blue-50 text-blue-600 font-semibold px-2 py-0.5 rounded-full"><i class="far fa-calendar-alt mr-1"></i>${formattedDate}</span>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">${k.desc}</p>
+                        ${k.foto ? `
+                            <div class="mt-2">
+                                <button onclick="showBuktiModal('${k.foto}', '${k.judul}')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border flex items-center gap-1 font-medium">
+                                    <i class="fas fa-camera text-blue-600"></i> Lihat Foto Kegiatan
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
                 `;
             });
         }
