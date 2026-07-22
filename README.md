@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -126,11 +126,11 @@
             <!-- Grid Summary -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="bg-blue-600 text-white p-3 rounded-2xl">
-                    <p class="text-xs">Bayar Bulan Ini (<span id="lbl-bulan-ini">Jul</span>)</p>
+                    <p class="text-xs">Bayar Bulan Ini (<span id="lbl-bulan-ini">Januari</span>)</p>
                     <p class="text-xl font-bold mt-1" id="stat-bayar-bulan">0 / 0 <span class="text-xs font-normal">anggota</span></p>
                 </div>
                 <div class="bg-purple-600 text-white p-3 rounded-2xl">
-                    <p class="text-xs">Iuran Bulan Ini (<span id="lbl-bulan-ini-2">Jul</span>)</p>
+                    <p class="text-xs">Iuran Bulan Ini (<span id="lbl-bulan-ini-2">Januari</span>)</p>
                     <p class="text-xl font-bold mt-1" id="stat-iuran-bulan">Rp 0</p>
                 </div>
                 <div class="bg-sky-500 text-white p-3 rounded-2xl">
@@ -174,19 +174,19 @@
                     <thead class="bg-blue-600 text-white">
                         <tr id="tabel-iuran-header">
                             <th class="p-2 border-b text-center sticky-col-no w-8">No</th>
-                            <th class="p-2 border-b sticky-col-nama min-w-[120px]">Nama</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Jan</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Feb</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Mar</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Apr</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Mei</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Jun</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Jul</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Agu</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Sep</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Okt</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Nov</th>
-                            <th class="p-2 border-b text-center min-w-[45px]">Des</th>
+                            <th class="p-2 border-b sticky-col-nama min-w-[130px]">Nama</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Januari</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Februari</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Maret</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">April</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Mei</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Juni</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Juli</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Agustus</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">September</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Oktober</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">November</th>
+                            <th class="p-2 border-b text-center min-w-[75px]">Desember</th>
                         </tr>
                     </thead>
                     <tbody id="tabel-iuran-body" class="divide-y">
@@ -211,7 +211,7 @@
                 
                 <div>
                     <label class="text-xs font-semibold text-gray-600 mb-1 block">Pilih Bulan (Tahun <span class="lbl-tahun">2026</span>):</label>
-                    <div id="container-checkbox-bulan" class="grid grid-cols-3 gap-2 bg-gray-50 p-2.5 rounded-lg border max-h-40 overflow-y-auto">
+                    <div id="container-checkbox-bulan" class="grid grid-cols-2 gap-2 bg-gray-50 p-2.5 rounded-lg border max-h-48 overflow-y-auto">
                         <!-- Dynamic Checkboxes -->
                     </div>
                 </div>
@@ -394,7 +394,8 @@
             "Yudi A", "Yusa"
         ];
 
-        const bulanList = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+        // Nama Bulan Lengkap Januari - Desember
+        const bulanList = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
         let anggotaList = JSON.parse(localStorage.getItem('anggotaList')) || defaultAnggota;
         let passAnggota = 'wheel123';
