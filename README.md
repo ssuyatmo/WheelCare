@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -10,13 +11,19 @@
         .active-tab { color: #2563eb; font-weight: bold; }
         
         /* Freeze column untuk tabel iuran */
-        .sticky-col {
+        .sticky-col-no {
             position: sticky;
             left: 0;
             background-color: white;
             z-index: 10;
         }
-        th.sticky-col {
+        .sticky-col-nama {
+            position: sticky;
+            left: 35px;
+            background-color: white;
+            z-index: 10;
+        }
+        th.sticky-col-no, th.sticky-col-nama {
             background-color: #2563eb;
             color: white;
             z-index: 20;
@@ -91,7 +98,7 @@
                 <p>Status: <b id="user-role-label" class="capitalize">Anggota</b></p>
                 <div class="flex items-center space-x-1">
                     <span>Tahun:</span>
-                    <select id="filter-tahun" onchange="updateAllData()" class="bg-blue-700 text-white text-xs rounded px-1 py-0.5 border border-blue-400">
+                    <select id="filter-tahun" onchange="updateAllData()" class="bg-blue-700 text-white text-xs rounded px-2 py-1 border border-blue-400 font-bold">
                         <!-- Dynamic Years -->
                     </select>
                 </div>
@@ -102,7 +109,7 @@
         <div id="tab-beranda" class="p-4 space-y-4">
             <div class="bg-emerald-600 text-white p-4 rounded-2xl flex justify-between items-center shadow">
                 <div>
-                    <p class="text-xs opacity-90">Saldo Kas Saat Ini</p>
+                    <p class="text-xs opacity-90">Saldo Kas Saat Ini (<span class="lbl-tahun">2026</span>)</p>
                     <p class="text-2xl font-bold" id="total-saldo-display">Rp 0</p>
                 </div>
                 <div class="w-10 h-10 bg-yellow-400 text-yellow-900 rounded-full flex items-center justify-center font-bold text-xl">$</div>
@@ -119,19 +126,19 @@
             <!-- Grid Summary -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="bg-blue-600 text-white p-3 rounded-2xl">
-                    <p class="text-xs">Bayar Bulan Ini</p>
+                    <p class="text-xs">Bayar Bulan Ini (<span id="lbl-bulan-ini">Jul</span>)</p>
                     <p class="text-xl font-bold mt-1" id="stat-bayar-bulan">0 / 0 <span class="text-xs font-normal">anggota</span></p>
                 </div>
                 <div class="bg-purple-600 text-white p-3 rounded-2xl">
-                    <p class="text-xs">Iuran Bulan Ini</p>
+                    <p class="text-xs">Iuran Bulan Ini (<span id="lbl-bulan-ini-2">Jul</span>)</p>
                     <p class="text-xl font-bold mt-1" id="stat-iuran-bulan">Rp 0</p>
                 </div>
                 <div class="bg-sky-500 text-white p-3 rounded-2xl">
-                    <p class="text-xs">Total Iuran Masuk</p>
+                    <p class="text-xs">Total Iuran Masuk (<span class="lbl-tahun">2026</span>)</p>
                     <p class="text-xl font-bold mt-1" id="stat-total-iuran">Rp 0</p>
                 </div>
                 <div class="bg-orange-500 text-white p-3 rounded-2xl">
-                    <p class="text-xs">Total Pengeluaran</p>
+                    <p class="text-xs">Total Pengeluaran (<span class="lbl-tahun">2026</span>)</p>
                     <p class="text-xl font-bold mt-1" id="stat-total-pengeluaran">Rp 0</p>
                 </div>
             </div>
@@ -166,8 +173,20 @@
                 <table class="w-full text-left text-xs border-collapse">
                     <thead class="bg-blue-600 text-white">
                         <tr id="tabel-iuran-header">
-                            <th class="p-2 border-b">No</th>
-                            <th class="p-2 border-b sticky-col">Nama</th>
+                            <th class="p-2 border-b text-center sticky-col-no w-8">No</th>
+                            <th class="p-2 border-b sticky-col-nama min-w-[120px]">Nama</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Jan</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Feb</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Mar</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Apr</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Mei</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Jun</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Jul</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Agu</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Sep</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Okt</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Nov</th>
+                            <th class="p-2 border-b text-center min-w-[45px]">Des</th>
                         </tr>
                     </thead>
                     <tbody id="tabel-iuran-body" class="divide-y">
@@ -191,7 +210,7 @@
                 </div>
                 
                 <div>
-                    <label class="text-xs font-semibold text-gray-600 mb-1 block">Pilih Bulan (Bisa Lebih Dari Satu):</label>
+                    <label class="text-xs font-semibold text-gray-600 mb-1 block">Pilih Bulan (Tahun <span class="lbl-tahun">2026</span>):</label>
                     <div id="container-checkbox-bulan" class="grid grid-cols-3 gap-2 bg-gray-50 p-2.5 rounded-lg border max-h-40 overflow-y-auto">
                         <!-- Dynamic Checkboxes -->
                     </div>
@@ -217,7 +236,7 @@
             <div id="kas-sub-dana-sosial" class="space-y-3">
                 <div class="bg-rose-50 border border-rose-200 p-3 rounded-xl flex justify-between items-center">
                     <div>
-                        <p class="text-xs text-rose-700 font-semibold">Total Penggunaan Dana Sosial</p>
+                        <p class="text-xs text-rose-700 font-semibold">Total Dana Sosial (<span class="lbl-tahun">2026</span>)</p>
                         <p class="text-xl font-bold text-rose-800" id="total-dana-sosial-txt">Rp 0</p>
                     </div>
                     <i class="fas fa-heart text-2xl text-rose-500"></i>
@@ -257,7 +276,7 @@
             <div id="kas-sub-pengeluaran" class="space-y-3 hidden">
                 <div class="bg-orange-50 border border-orange-200 p-3 rounded-xl flex justify-between items-center">
                     <div>
-                        <p class="text-xs text-orange-700 font-semibold">Total Pengeluaran Operasional</p>
+                        <p class="text-xs text-orange-700 font-semibold">Total Pengeluaran Operasional (<span class="lbl-tahun">2026</span>)</p>
                         <p class="text-xl font-bold text-orange-800" id="total-pengeluaran-txt">Rp 0</p>
                     </div>
                     <i class="fas fa-wallet text-2xl text-orange-500"></i>
@@ -291,7 +310,7 @@
             <!-- SUB TAB 3: LAPORAN KAS -->
             <div id="kas-sub-laporan-kas" class="space-y-3 hidden">
                 <div class="bg-white p-3 rounded-xl shadow border">
-                    <h3 class="font-bold text-sm text-gray-800 mb-2"><i class="fas fa-chart-line text-blue-600 mr-1"></i> Ringkasan Arus Kas Bulanan</h3>
+                    <h3 class="font-bold text-sm text-gray-800 mb-2"><i class="fas fa-chart-line text-blue-600 mr-1"></i> Arus Kas Bulanan (<span class="lbl-tahun">2026</span>)</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-[11px] border-collapse">
                             <thead class="bg-blue-600 text-white">
@@ -313,7 +332,7 @@
 
         <!-- TAB: KEGIATAN ANGGOTA -->
         <div id="tab-kegiatan" class="p-4 hidden space-y-4">
-            <h2 class="text-lg font-bold text-gray-800">Kegiatan Anggota</h2>
+            <h2 class="text-lg font-bold text-gray-800">Kegiatan Anggota (<span class="lbl-tahun">2026</span>)</h2>
 
             <div class="bg-white p-3 rounded-xl shadow border space-y-2">
                 <p class="text-xs font-bold text-blue-600"><i class="fas fa-plus-circle mr-1"></i> Upload Kegiatan Baru</p>
@@ -328,7 +347,7 @@
             </div>
 
             <div class="space-y-3">
-                <p class="text-xs font-bold text-gray-600"><i class="fas fa-history mr-1"></i> Riwayat Kegiatan</p>
+                <p class="text-xs font-bold text-gray-600"><i class="fas fa-history mr-1"></i> Riwayat Kegiatan (<span class="lbl-tahun">2026</span>)</p>
                 <div id="list-riwayat-kegiatan" class="space-y-3">
                     <!-- Dynamic List -->
                 </div>
@@ -378,7 +397,7 @@
         const bulanList = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
         let anggotaList = JSON.parse(localStorage.getItem('anggotaList')) || defaultAnggota;
-        let passAnggota = 'wheel123'; // Password diganti menjadi wheel123
+        let passAnggota = 'wheel123';
         let passAdmin = localStorage.getItem('passAdmin') || 'Mo12345';
         let currentRole = '';
 
@@ -390,7 +409,7 @@
         let kegiatanList = JSON.parse(localStorage.getItem('kegiatanList')) || [
             {
                 id: 1,
-                judul: "Silaturahmi",
+                judul: "Silaturahmi & Gathering",
                 tgl: "2026-07-01",
                 desc: "Dokumentasi kegiatan dan notulensi rapat warga diperbarui secara berkala.",
                 foto: ""
@@ -403,7 +422,7 @@
         function initYearsAndMonths() {
             const selectFilter = document.getElementById('filter-tahun');
             selectFilter.innerHTML = '';
-            for(let y = currentYear - 2; y <= 2050; y++) {
+            for(let y = currentYear - 2; y <= 2030; y++) {
                 selectFilter.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
             }
             document.querySelectorAll('.current-year-txt').forEach(el => el.innerText = currentYear);
@@ -431,7 +450,7 @@
             } else if (role === 'admin' && inputPw === passAdmin) {
                 currentRole = 'admin';
             } else {
-                alert('Pasword sampean salah');
+                alert('Password yang Anda masukkan salah!');
                 return;
             }
 
@@ -528,7 +547,6 @@
             }
         }
 
-        // Fungsi Admin untuk menghapus laporan iuran yang telah disimpan
         function hapusIuranSelesai(tahun, nama, bulan) {
             if (confirm(`Hapus data iuran ${nama} untuk bulan ${bulan} ${tahun}?`)) {
                 if (iuranData[tahun] && iuranData[tahun][nama] && iuranData[tahun][nama][bulan]) {
@@ -679,6 +697,9 @@
         function updateAllData() {
             selectedYear = document.getElementById('filter-tahun').value;
             
+            // Perbarui teks tahun di UI
+            document.querySelectorAll('.lbl-tahun').forEach(el => el.innerText = selectedYear);
+
             // Render Select Nama Lapor
             const selectNama = document.getElementById('input-nama');
             selectNama.innerHTML = '';
@@ -726,17 +747,16 @@
 
             // Render Tabel Iuran
             document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
-            const headerRow = document.getElementById('tabel-iuran-header');
-            headerRow.innerHTML = `<th class="p-2 border-b">No</th><th class="p-2 border-b sticky-col">Nama</th>`;
-            bulanList.forEach(b => {
-                headerRow.innerHTML += `<th class="p-2 border-b text-center min-w-[50px]">${b}</th>`;
-            });
-
             const bodyTable = document.getElementById('tabel-iuran-body');
             bodyTable.innerHTML = '';
 
             let totalIuranTahunIni = 0;
-            let currentMonthIdx = new Date().getMonth();
+            let targetMonthIdx = (selectedYear == currentYear) ? new Date().getMonth() : 0; 
+            let targetMonthName = bulanList[targetMonthIdx];
+
+            document.getElementById('lbl-bulan-ini').innerText = targetMonthName;
+            document.getElementById('lbl-bulan-ini-2').innerText = targetMonthName;
+
             let countBayarBulanIni = 0;
             let totalIuranBulanIni = 0;
 
@@ -744,15 +764,15 @@
 
             anggotaList.forEach((nama, idx) => {
                 let rowHtml = `<tr>
-                    <td class="p-2 border-b text-center text-gray-500">${idx + 1}</td>
-                    <td class="p-2 border-b font-medium text-gray-800 sticky-col">${nama}</td>`;
+                    <td class="p-2 border-b text-center text-gray-500 sticky-col-no">${idx + 1}</td>
+                    <td class="p-2 border-b font-medium text-gray-800 sticky-col-nama">${nama}</td>`;
 
                 bulanList.forEach((bln, mIdx) => {
                     const dataBayar = yearIuran[nama] ? yearIuran[nama][bln] : null;
 
                     if(dataBayar) {
                         totalIuranTahunIni += dataBayar.nominal;
-                        if(mIdx === currentMonthIdx) {
+                        if(mIdx === targetMonthIdx) {
                             countBayarBulanIni++;
                             totalIuranBulanIni += dataBayar.nominal;
                         }
@@ -778,17 +798,21 @@
                 bodyTable.innerHTML += rowHtml;
             });
 
-            // Summary Stats Calculation
+            // Summary Stats
             document.getElementById('stat-bayar-bulan').innerHTML = `${countBayarBulanIni} / ${anggotaList.length} <span class="text-xs font-normal">anggota</span>`;
             document.getElementById('stat-iuran-bulan').innerText = `Rp ${totalIuranBulanIni.toLocaleString()}`;
             document.getElementById('stat-total-iuran').innerText = `Rp ${totalIuranTahunIni.toLocaleString()}`;
 
-            // Render Dana Sosial
+            // Render Dana Sosial (Filtered Per Tahun)
             const dansosBody = document.getElementById('list-dana-sosial-body');
             dansosBody.innerHTML = '';
             let totalDansos = 0;
 
-            const filteredDansos = danaSosialList.filter(d => d.tahun == selectedYear);
+            const filteredDansos = danaSosialList.filter(d => {
+                const yr = d.tahun || (d.tgl ? d.tgl.split('-')[0] : selectedYear);
+                return yr == selectedYear;
+            });
+
             filteredDansos.forEach(item => {
                 totalDansos += item.nominal;
                 dansosBody.innerHTML += `
@@ -802,12 +826,16 @@
             });
             document.getElementById('total-dana-sosial-txt').innerText = `Rp ${totalDansos.toLocaleString()}`;
 
-            // Render Pengeluaran
+            // Render Pengeluaran (Filtered Per Tahun)
             const pengeluaranBody = document.getElementById('list-pengeluaran-body');
             pengeluaranBody.innerHTML = '';
             let totalPengeluaran = 0;
 
-            const filteredPengeluaran = pengeluaranList.filter(p => p.tahun == selectedYear);
+            const filteredPengeluaran = pengeluaranList.filter(p => {
+                const yr = p.tahun || (p.tgl ? p.tgl.split('-')[0] : selectedYear);
+                return yr == selectedYear;
+            });
+
             filteredPengeluaran.forEach(item => {
                 totalPengeluaran += item.nominal;
                 const btnBukti = item.bukti ? `<button onclick="showBukti('${item.bukti}', '${item.ket}')" class="text-blue-600 underline text-[10px]">Lihat</button>` : '-';
@@ -824,16 +852,16 @@
             document.getElementById('total-pengeluaran-txt').innerText = `Rp ${totalPengeluaran.toLocaleString()}`;
             document.getElementById('stat-total-pengeluaran').innerText = `Rp ${(totalPengeluaran + totalDansos).toLocaleString()}`;
 
-            // Saldo Kas
+            // Saldo Kas Murni Per Tahun
             const totalSaldoKas = totalIuranTahunIni - (totalPengeluaran + totalDansos);
             document.getElementById('total-saldo-display').innerText = `Rp ${totalSaldoKas.toLocaleString()}`;
 
-            // Render Laporan Arus Kas Bulanan
+            // Laporan Arus Kas Bulanan
             const kasBody = document.getElementById('tabel-laporan-kas-body');
             kasBody.innerHTML = '';
             let runningSaldo = 0;
 
-            bulanList.forEach(bln => {
+            bulanList.forEach((bln, idx) => {
                 let masukBln = 0;
                 anggotaList.forEach(nama => {
                     if(yearIuran[nama] && yearIuran[nama][bln]) {
@@ -842,11 +870,11 @@
                 });
 
                 let keluarBln = filteredPengeluaran
-                    .filter(p => new Date(p.tgl).getMonth() === bulanList.indexOf(bln))
+                    .filter(p => p.tgl && new Date(p.tgl).getMonth() === idx)
                     .reduce((acc, curr) => acc + curr.nominal, 0);
 
                 let dansosBln = filteredDansos
-                    .filter(d => new Date(d.tgl).getMonth() === bulanList.indexOf(bln))
+                    .filter(d => d.tgl && new Date(d.tgl).getMonth() === idx)
                     .reduce((acc, curr) => acc + curr.nominal, 0);
 
                 runningSaldo += (masukBln - keluarBln - dansosBln);
@@ -862,22 +890,32 @@
                 `;
             });
 
-            // Render Kegiatan
+            // Render Kegiatan (Filtered Per Tahun)
             const listKegiatan = document.getElementById('list-riwayat-kegiatan');
             listKegiatan.innerHTML = '';
-            kegiatanList.forEach(keg => {
-                const imgTag = keg.foto ? `<img src="${keg.foto}" onclick="showBukti('${keg.foto}', '${keg.judul}')" class="w-full h-32 object-cover rounded-lg cursor-pointer mb-2">` : '';
-                listKegiatan.innerHTML += `
-                    <div class="bg-white p-3 rounded-xl shadow border space-y-1">
-                        ${imgTag}
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-sm text-gray-800">${keg.judul}</h3>
-                            <span class="text-[10px] text-gray-400"><i class="far fa-calendar-alt mr-1"></i>${keg.tgl}</span>
-                        </div>
-                        <p class="text-xs text-gray-600 leading-relaxed">${keg.desc}</p>
-                    </div>
-                `;
+            
+            const filteredKegiatan = kegiatanList.filter(k => {
+                if(!k.tgl) return true;
+                return k.tgl.startsWith(selectedYear.toString());
             });
+
+            if(filteredKegiatan.length === 0) {
+                listKegiatan.innerHTML = `<p class="text-xs text-gray-500 italic text-center py-4">Belum ada kegiatan tercatat pada tahun ${selectedYear}.</p>`;
+            } else {
+                filteredKegiatan.forEach(keg => {
+                    const imgTag = keg.foto ? `<img src="${keg.foto}" onclick="showBukti('${keg.foto}', '${keg.judul}')" class="w-full h-32 object-cover rounded-lg cursor-pointer mb-2">` : '';
+                    listKegiatan.innerHTML += `
+                        <div class="bg-white p-3 rounded-xl shadow border space-y-1">
+                            ${imgTag}
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-sm text-gray-800">${keg.judul}</h3>
+                                <span class="text-[10px] text-gray-400"><i class="far fa-calendar-alt mr-1"></i>${keg.tgl}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 leading-relaxed">${keg.desc}</p>
+                        </div>
+                    `;
+                });
+            }
         }
     </script>
 </body>
