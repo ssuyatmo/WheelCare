@@ -14,19 +14,21 @@
         .sticky-col-no {
             position: sticky;
             left: 0;
-            background-color: white;
-            z-index: 10;
+            background-color: #2563eb;
+            color: white;
+            z-index: 20;
         }
         .sticky-col-nama {
             position: sticky;
             left: 35px;
-            background-color: white;
-            z-index: 10;
-        }
-        th.sticky-col-no, th.sticky-col-nama {
             background-color: #2563eb;
             color: white;
             z-index: 20;
+        }
+        tbody td.sticky-col-no, tbody td.sticky-col-nama {
+            background-color: white;
+            color: inherit;
+            z-index: 10;
         }
     </style>
 </head>
@@ -175,7 +177,18 @@
                         <tr id="tabel-iuran-header">
                             <th class="p-2.5 border-b border-blue-500 text-center sticky-col-no w-8">No</th>
                             <th class="p-2.5 border-b border-blue-500 sticky-col-nama min-w-[130px]">Nama</th>
-                            <!-- Di-render dinamis via JavaScript dari Januari s/d Desember -->
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Januari</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Februari</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Maret</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">April</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Mei</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Juni</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Juli</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Agustus</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">September</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Oktober</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">November</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">Desember</th>
                         </tr>
                     </thead>
                     <tbody id="tabel-iuran-body" class="divide-y">
@@ -409,17 +422,6 @@
         const currentYear = new Date().getFullYear();
         let selectedYear = currentYear;
 
-        function renderHeaderIuran() {
-            const headerRow = document.getElementById('tabel-iuran-header');
-            headerRow.innerHTML = `
-                <th class="p-2.5 border-b border-blue-500 text-center sticky-col-no w-8">No</th>
-                <th class="p-2.5 border-b border-blue-500 sticky-col-nama min-w-[130px]">Nama</th>
-            `;
-            bulanList.forEach(bulan => {
-                headerRow.innerHTML += `<th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">${bulan}</th>`;
-            });
-        }
-
         function initYearsAndMonths() {
             const selectFilter = document.getElementById('filter-tahun');
             selectFilter.innerHTML = '';
@@ -440,7 +442,6 @@
             });
 
             document.getElementById('input-tgl-kegiatan').valueAsDate = new Date();
-            renderHeaderIuran();
         }
 
         function login() {
@@ -746,9 +747,6 @@
                     `;
                 });
             }
-
-            // Ensure header bulan di-render ulang
-            renderHeaderIuran();
 
             // Render Tabel Iuran
             document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
