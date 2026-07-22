@@ -1,243 +1,230 @@
-# WheelCare
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Inspection Report</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #f0f4ff, #d9e4ff);
-      margin: 0;
-      padding: 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    h2 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 15px;
-    }
-    label {
-      font-weight: bold;
-      color: #333;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #aaa;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-    .checkbox-group {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .checkbox-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 6px 10px;
-    }
-    .checkbox-item label {
-      font-weight: normal;
-      flex: 1;
-    }
-    .checkbox-item input {
-      transform: scale(1.2);
-      margin-left: 8px;
-    }
-    button {
-      padding: 12px;
-      margin: 5px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #fff;
-    }
-    .btn-wa { background: #25d366; }
-    .btn-copy { background: #3498db; }
-    .output {
-      white-space: pre-wrap;
-      background: #f9f9f9;
-      border-radius: 8px;
-      padding: 15px;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keluarga Besar Wheel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .active-tab { color: #2563eb; }
+    </style>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen pb-20">
 
-  <div class="card">
-    <h2>Form Inspection</h2>
-
-    <label>Pilih Jenis QA</label>
-    <select id="qaType">
-      <option value="QA-1 Pre Inspection">QA-1 Pre Inspection</option>
-      <option value="QA-7 Final Inspection">QA-7 Final Inspection</option>
-    </select>
-
-    <label>📅 Tanggal</label>
-    <input type="date" id="tanggal">
-
-    <label>👷 Mekanik</label>
-    <input type="text" id="mekanik" placeholder="contoh: Mario, Jovan">
-
-    <label>🚗 CN</label>
-    <input type="text" id="cn">
-
-    <label>⌛ HM</label>
-    <input type="text" id="hm">
-
-    <h3>🩸 Oil Level</h3>
-    <div class="checkbox-group">
-      <div class="checkbox-item"><label>Engine oil</label><input type="checkbox" id="engineOil"></div>
-      <div class="checkbox-item"><label>Transmission oil</label><input type="checkbox" id="transOil"></div>
-      <div class="checkbox-item"><label>Hydraulic oil</label><input type="checkbox" id="hydOil"></div>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="fixed inset-0 bg-gradient-to-b from-blue-600 to-blue-800 z-50 flex flex-col items-center justify-center p-4">
+        <div class="text-center text-white mb-6">
+            <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
+                <i class="fas font-bold text-4xl fa-users text-white"></i>
+            </div>
+            <h1 class="text-2xl font-bold">Keluarga Besar Wheel</h1>
+            <p class="text-sm opacity-80">Sistem Laporan Keuangan Keluarga</p>
+        </div>
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl text-center">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Masuk ke Aplikasi</h2>
+            <div class="mb-4 text-left">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input type="password" id="password-input" placeholder="Masukkan password..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">Masuk</button>
+            <p class="text-xs text-gray-400 mt-4">Keluarga Besar Wheel</p>
+        </div>
     </div>
 
-    <h3>⚙ Engine Area</h3>
-    <div class="checkbox-group">
-      <div class="checkbox-item"><label>Belt tension</label><input type="checkbox" id="belt"></div>
-      <div class="checkbox-item"><label>Oil leakage</label><input type="checkbox" id="oilLeak"></div>
-      <div class="checkbox-item"><label>Common Rail Connector</label><input type="checkbox" id="crc"></div>
-      <div class="checkbox-item"><label>Injector Tube</label><input type="checkbox" id="injector"></div>
+    <!-- MAIN APP CONTENT -->
+    <div id="app" class="max-w-md mx-auto bg-gray-50 min-h-screen shadow-md relative hidden">
+        
+        <!-- HEADER -->
+        <div class="bg-blue-600 text-white p-4 rounded-b-2xl shadow-lg">
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-users text-2xl"></i>
+                    <h1 class="text-xl font-bold">Keluarga Besar Wheel</h1>
+                </div>
+                <button onclick="logout()" class="bg-red-500 p-2 rounded-lg text-xs"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+            <p class="text-xs text-blue-100">Masuk sebagai <b>Anggota</b> • Iuran: Rp 50.000/bulan</p>
+        </div>
+
+        <!-- TAB CONTENT: BERANDA -->
+        <div id="tab-beranda" class="p-4 space-y-4">
+            <!-- Saldo Utama -->
+            <div class="bg-emerald-600 text-white p-4 rounded-2xl flex justify-between items-center shadow">
+                <div>
+                    <p class="text-xs opacity-90">Saldo Kas Saat Ini</p>
+                    <p class="text-2xl font-bold">Rp 4.363.000</p>
+                </div>
+                <div class="w-10 h-10 bg-yellow-400 text-yellow-900 rounded-full flex items-center justify-center font-bold text-xl">$</div>
+            </div>
+
+            <!-- Grid Ringkasan -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-blue-600 text-white p-3 rounded-2xl">
+                    <p class="text-xs">Bayar Juli</p>
+                    <p class="text-xl font-bold mt-1">28 / 87 <span class="text-sm font-normal">kk</span></p>
+                </div>
+                <div class="bg-purple-600 text-white p-3 rounded-2xl">
+                    <p class="text-xs">Iuran Juli</p>
+                    <p class="text-xl font-bold mt-1">Rp 3.500.000</p>
+                </div>
+                <div class="bg-sky-500 text-white p-3 rounded-2xl">
+                    <p class="text-xs">Total Iuran Masuk</p>
+                    <p class="text-xl font-bold mt-1">Rp 28.000.000</p>
+                </div>
+                <div class="bg-orange-500 text-white p-3 rounded-2xl">
+                    <p class="text-xs">Total Pengeluaran</p>
+                    <p class="text-xl font-bold mt-1">Rp 26.029.000</p>
+                </div>
+                <div class="bg-pink-600 text-white p-3 rounded-2xl">
+                    <p class="text-xs">Total Dana Sosial</p>
+                    <p class="text-xl font-bold mt-1">Rp 2.700.000</p>
+                </div>
+                <div class="bg-slate-700 text-white p-3 rounded-2xl">
+                    <p class="text-xs">Saldo Awal (carry over)</p>
+                    <p class="text-xl font-bold mt-1">Rp 5.092.000</p>
+                </div>
+            </div>
+
+            <!-- Card Rekening -->
+            <div class="bg-slate-800 text-white p-4 rounded-2xl shadow">
+                <p class="text-xs text-gray-300 font-semibold mb-1"><i class="fas fa-university mr-1"></i> REKENING PEMBAYARAN</p>
+                <p class="text-xl font-mono tracking-wider font-bold">372701000814503</p>
+                <p class="text-sm text-gray-300">a.n. Bendahara Keluarga</p>
+                <span class="inline-block bg-blue-600 text-xs px-2 py-0.5 rounded mt-2 font-bold">BANK BRI</span>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: IURAN -->
+        <div id="tab-iuran" class="p-4 hidden">
+            <h2 class="text-lg font-bold mb-3">Data Pembayaran Iuran</h2>
+            <div class="overflow-x-auto bg-white rounded-xl shadow border">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="p-2">No</th>
+                            <th class="p-2">Nama</th>
+                            <th class="p-2">Jan</th>
+                            <th class="p-2">Feb</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        <tr><td class="p-2">1</td><td class="p-2 font-semibold">Budi Wheel</td><td class="p-2 text-green-600">✓</td><td class="p-2 text-green-600">✓</td></tr>
+                        <tr><td class="p-2">2</td><td class="p-2 font-semibold">Andi Wheel</td><td class="p-2 text-red-500">—</td><td class="p-2 text-green-600">✓</td></tr>
+                        <tr><td class="p-2">3</td><td class="p-2 font-semibold">Eka Wheel</td><td class="p-2 text-green-600">✓</td><td class="p-2 text-red-500">—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: LAPOR -->
+        <div id="tab-lapor" class="p-4 space-y-4 hidden">
+            <h2 class="text-lg font-bold">Lapor Pembayaran</h2>
+            <form onsubmit="event.preventDefault(); alert('Laporan berhasil dikirim!');" class="bg-white p-4 rounded-xl shadow space-y-3">
+                <div>
+                    <label class="text-xs font-semibold text-gray-600">Nama Anggota</label>
+                    <select class="w-full p-2 border rounded-lg text-sm">
+                        <option>-- Pilih Nama --</option>
+                        <option>Budi Wheel</option>
+                        <option>Andi Wheel</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Tahun</label>
+                        <select class="w-full p-2 border rounded-lg text-sm"><option>2026</option></select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Bulan</label>
+                        <select class="w-full p-2 border rounded-lg text-sm"><option>Juli</option></select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-gray-600">Bukti Transfer</label>
+                    <input type="file" class="w-full text-xs p-2 border rounded-lg">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold">Kirim Laporan</button>
+            </form>
+        </div>
+
+        <!-- TAB CONTENT: KAS -->
+        <div id="tab-kas" class="p-4 hidden">
+            <h2 class="text-lg font-bold mb-3">Laporan Arus Kas</h2>
+            <div class="bg-white p-4 rounded-xl shadow text-xs space-y-2">
+                <div class="flex justify-between border-b pb-2"><span>Pemasukan Juli:</span><span class="font-bold text-green-600">Rp 3.500.000</span></div>
+                <div class="flex justify-between border-b pb-2"><span>Pengeluaran Juli:</span><span class="font-bold text-red-600">Rp 1.200.000</span></div>
+                <div class="flex justify-between pt-1 font-bold text-sm"><span>Saldo Akhir:</span><span class="text-blue-600">Rp 4.363.000</span></div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: KEGIATAN -->
+        <div id="tab-kegiatan" class="p-4 hidden">
+            <h2 class="text-lg font-bold mb-3">Notulensi & Kegiatan</h2>
+            <div class="bg-white p-3 rounded-xl shadow mb-2 text-xs">
+                <p class="font-bold text-blue-600">Rapat Arisan Keluarga</p>
+                <p class="text-gray-500">15 Juli 2026</p>
+                <p class="mt-1">Keputusan: Acara liburan bersama dilaksanakan bulan Desember.</p>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t flex justify-around items-center py-2 text-xs text-gray-500 z-40">
+            <button onclick="switchTab('beranda')" id="btn-beranda" class="flex flex-col items-center active-tab">
+                <i class="fas fa-home text-lg"></i>
+                <span>Beranda</span>
+            </button>
+            <button onclick="switchTab('iuran')" id="btn-iuran" class="flex flex-col items-center">
+                <i class="fas fa-th-large text-lg"></i>
+                <span>Iuran</span>
+            </button>
+            <button onclick="switchTab('lapor')" id="btn-lapor" class="flex flex-col items-center -mt-5">
+                <div class="bg-blue-600 text-white p-3 rounded-full shadow-lg">
+                    <i class="fas fa-file-medical text-xl"></i>
+                </div>
+                <span class="mt-1 font-bold text-blue-600">Lapor</span>
+            </button>
+            <button onclick="switchTab('kas')" id="btn-kas" class="flex flex-col items-center">
+                <i class="fas fa-chart-bar text-lg"></i>
+                <span>Kas</span>
+            </button>
+            <button onclick="switchTab('kegiatan')" id="btn-kegiatan" class="flex flex-col items-center">
+                <i class="fas fa-book text-lg"></i>
+                <span>Kegiatan</span>
+            </button>
+        </div>
+
     </div>
 
-    <h3>🚗 Cabin Area</h3>
-    <div class="checkbox-group">
-      <div class="checkbox-item"><label>FM Radio</label><input type="checkbox" id="radio"></div>
-      <div class="checkbox-item"><label>Fatigue Warning</label><input type="checkbox" id="fatigue"></div>
-      <div class="checkbox-item"><label>Power Window</label><input type="checkbox" id="pw"></div>
-    </div>
-    <label>⚡ Power Supply</label>
-    <input type="text" id="powerSupply" placeholder="contoh: 27.7 V">
-    <label>💧 Common Rail Pressure (ON)</label>
-    <input type="text" id="crp" placeholder="contoh: 0 MPa">
+    <script>
+        function login() {
+            const pw = document.getElementById('password-input').value;
+            if(pw !== '') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+            } else {
+                alert('Silahkan masukkan password!');
+            }
+        }
 
-    <h3>🚗 Frame Area</h3>
-    <div class="checkbox-group">
-      <div class="checkbox-item"><label>Operator seat</label><input type="checkbox" id="seat"></div>
-      <div class="checkbox-item"><label>Hand Rail</label><input type="checkbox" id="rail"></div>
-    </div>
+        function logout() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('app').classList.add('hidden');
+        }
 
-    <h3>💧 Pressure Suspension (Panel)</h3>
-    <label>FL</label><input type="text" id="fl">
-    <label>FR</label><input type="text" id="fr">
-    <label>RL</label><input type="text" id="rl">
-    <label>RR</label><input type="text" id="rr">
+        function switchTab(tabName) {
+            const tabs = ['beranda', 'iuran', 'lapor', 'kas', 'kegiatan'];
+            tabs.forEach(tab => {
+                document.getElementById(`tab-${tab}`).classList.add('hidden');
+                const btn = document.getElementById(`btn-${tab}`);
+                if(btn) btn.classList.remove('active-tab');
+            });
 
-    <h3>📝 Validasi & Kelengkapan Service</h3>
-    <div class="checkbox-group">
-      <div class="checkbox-item"><label>Job Card & Cover Checklist</label><input type="checkbox" id="jobCard"></div>
-      <div class="checkbox-item"><label>Form Observasi Redo PS</label><input type="checkbox" id="redo"></div>
-      <div class="checkbox-item"><label>Form QA 1 & QA 7</label><input type="checkbox" id="qaForm"></div>
-      <div class="checkbox-item"><label>Form PPM</label><input type="checkbox" id="ppm"></div>
-      <div class="checkbox-item"><label>Checklist A</label><input type="checkbox" id="a"></div>
-      <div class="checkbox-item"><label>Checklist B</label><input type="checkbox" id="b"></div>
-      <div class="checkbox-item"><label>Checklist C</label><input type="checkbox" id="c"></div>
-      <div class="checkbox-item"><label>Backlog</label><input type="checkbox" id="backlog"></div>
-      <div class="checkbox-item"><label>FUI</label><input type="checkbox" id="fui"></div>
-      <div class="checkbox-item"><label>Repair Order</label><input type="checkbox" id="ro"></div>
-      <div class="checkbox-item"><label>Combine Maintenance</label><input type="checkbox" id="combine"></div>
-      <div class="checkbox-item"><label>Service Activity Report</label><input type="checkbox" id="sar"></div>
-    </div>
-
-    <label>*Tyre Condition*</label>
-    <input type="text" id="tyre" placeholder="Good / Replace">
-
-    <label>*Deviation*</label>
-    <textarea id="deviation" rows="3"></textarea>
-
-    <button class="btn-wa" onclick="sendWA()">📤 Send to WA</button>
-    <button class="btn-copy" onclick="copyText()">📋 Copy</button>
-
-    <div class="output" id="output"></div>
-  </div>
-
-<script>
-function getCheck(id){ return document.getElementById(id).checked ? "✅" : "❌"; }
-
-function generateText(){
-  let text = `*${document.getElementById('qaType').value}*\n\n` +
-  `📅 Tgl : ${document.getElementById('tanggal').value}\n` +
-  `👷 Mekanik : ${document.getElementById('mekanik').value}\n\n` +
-  `🚗 CN : ${document.getElementById('cn').value}\n` +
-  `⌛ HM : ${document.getElementById('hm').value}\n\n` +
-  `🩸 *Oil Level* 🩸\n` +
-  `Engine oil level : ${getCheck('engineOil')}\n` +
-  `Transmission oil level : ${getCheck('transOil')}\n` +
-  `Hydraulic oil level : ${getCheck('hydOil')}\n\n` +
-  `⚙ *Engine Area* ⚙\n` +
-  `Belt tension : ${getCheck('belt')}\n` +
-  `Engine oil leakage : ${getCheck('oilLeak')}\n` +
-  `Common Rail Connector : ${getCheck('crc')}\n` +
-  `Injector Tube : ${getCheck('injector')}\n\n` +
-  `🚗 *Cabin Area* 🚗\n` +
-  `📸 FM Radio : ${getCheck('radio')}\n` +
-  `⛔ Fatigue Warning : ${getCheck('fatigue')}\n` +
-  `⚡ Power Supply : ${document.getElementById('powerSupply').value}\n` +
-  `💧 Common Rail Pressure (ON) : ${document.getElementById('crp').value}\n` +
-  `🖼️ Power Window : ${getCheck('pw')}\n\n` +
-  `🚗 *Frame Area* 🚗\n` +
-  `Operator seat : ${getCheck('seat')}\n` +
-  `Hand Rail : ${getCheck('rail')}\n\n` +
-  `💧 *Pressure Suspension (Panel)* 💧\n` +
-  `FL : ${document.getElementById('fl').value}\n` +
-  `FR : ${document.getElementById('fr').value}\n` +
-  `RL : ${document.getElementById('rl').value}\n` +
-  `RR : ${document.getElementById('rr').value}\n\n` +
-  `📝 Validasi & Kelengkapan Check list Service :\n` +
-  `- Job Card & Cover Checklist ${getCheck('jobCard')}\n` +
-  `- Form Observasi Redo PS ${getCheck('redo')}\n` +
-  `- Form QA 1 & QA 7 ${getCheck('qaForm')}\n` +
-  `- Form PPM ${getCheck('ppm')}\n` +
-  `- Form Checklist A ${getCheck('a')}\n` +
-  `- Form Checklist B ${getCheck('b')}\n` +
-  `- Form Checklist C ${getCheck('c')}\n` +
-  `- Form Backlog ${getCheck('backlog')}\n` +
-  `- Form FUI ${getCheck('fui')}\n` +
-  `- Form Repair Order ${getCheck('ro')}\n` +
-  `- Form Combine Maintenance ${getCheck('combine')}\n` +
-  `- Form Service Activity Report ${getCheck('sar')}\n\n` +
-  `*Tyre condition :*\nTyre : ${document.getElementById('tyre').value}\n\n` +
-  `*Deviation :*\n${document.getElementById('deviation').value}`;
-  
-  document.getElementById("output").innerText = text;
-  return text;
-}
-  <label>⚠️ Deviation</label>
-    <textarea id="deviation" placeholder="Ketik setiap temuan lalu tekan Enter..."></textarea>
-
-function formatDeviation(text) {
-  const lines = text.split('\n').filter(l => l.trim() !== '');
-  if (lines.length === 0) return '';
-  return '*Deviation :*\n' + lines.map(l => `⚠️ ${l.trim()}`).join('\n');
-}
-function sendWA(){
-  let text = generateText();
-  let url = "https://wa.me/?text=" + encodeURIComponent(text);
-  window.open(url, "_blank");
-}
-
-function copyText(){
-  let text = generateText();
-  navigator.clipboard.writeText(text).then(()=>{
-    alert("✅ Teks berhasil disalin, tinggal tempel di WhatsApp.");
-  });
-}
-</script>
-
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabName}`);
+            if(activeBtn && tabName !== 'lapor') activeBtn.classList.add('active-tab');
+        }
+    </script>
 </body>
 </html>
