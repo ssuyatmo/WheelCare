@@ -29,9 +29,9 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 bg-gradient-to-b from-blue-600 to-blue-800 z-50 flex flex-col items-center justify-center p-4">
         <div class="text-center text-white mb-6">
-            <!-- LOGO BARU GATHERING WHEEL -->
-            <div class="w-28 h-28 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg overflow-hidden border-2 border-white p-1">
-                <img src="logo.png" alt="Logo Wheel Section" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Logo+Wheel'">
+            <!-- LOGO PERTAMA (VEKTOR BIRU-KUNING) -->
+            <div class="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg border-4 border-white text-blue-900 font-black text-3xl tracking-tighter">
+                <i class="fas fa-users text-4xl text-blue-900"></i>
             </div>
             <h1 class="text-2xl font-bold">Keluarga Besar Wheel</h1>
             <p class="text-sm opacity-80">Family Gathering Wheel Section</p>
@@ -97,8 +97,9 @@
         <div class="bg-blue-600 text-white p-4 rounded-b-2xl shadow-lg">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-slate-900 rounded-full overflow-hidden border border-white p-0.5">
-                        <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Logo'">
+                    <!-- LOGO HEADER PERTAMA -->
+                    <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center border-2 border-white text-blue-900 font-bold">
+                        <i class="fas fa-users text-lg"></i>
                     </div>
                     <div>
                         <h1 class="text-lg font-bold leading-tight">Keluarga Besar Wheel</h1>
@@ -115,7 +116,7 @@
                 <div class="flex items-center space-x-1">
                     <span>Tahun:</span>
                     <select id="filter-tahun" onchange="updateAllData()" class="bg-blue-700 text-white text-xs rounded px-1 py-0.5 border border-blue-400">
-                        <!-- Dynamic Years up to 2050 -->
+                        <!-- Dynamic Years -->
                     </select>
                 </div>
             </div>
@@ -135,7 +136,7 @@
             <div id="admin-approval-panel" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 hidden">
                 <h3 class="text-xs font-bold text-amber-800 mb-2"><i class="fas fa-user-shield mr-1"></i> Panel Admin: Persetujuan Laporan</h3>
                 <div id="admin-laporan-list" class="space-y-2">
-                    <!-- Dynamic List via JavaScript -->
+                    <!-- Dynamic List -->
                 </div>
             </div>
 
@@ -143,7 +144,6 @@
             <div class="grid grid-cols-2 gap-3">
                 <div class="bg-blue-600 text-white p-3 rounded-2xl">
                     <p class="text-xs">Bayar Bulan Ini</p>
-                    <!-- Satuan diubah menjadi anggota -->
                     <p class="text-xl font-bold mt-1" id="stat-bayar-bulan">0 / 0 <span class="text-xs font-normal">anggota</span></p>
                 </div>
                 <div class="bg-purple-600 text-white p-3 rounded-2xl">
@@ -185,7 +185,7 @@
                 </div>
             </div>
 
-            <!-- Tabel Iuran dengan Freeze Column & Horizontal Scroll -->
+            <!-- Tabel Iuran -->
             <div class="overflow-x-auto bg-white rounded-xl shadow border">
                 <table class="w-full text-left text-xs border-collapse">
                     <thead class="bg-blue-600 text-white">
@@ -232,8 +232,6 @@
 
         <!-- TAB: KAS MENU -->
         <div id="tab-kas" class="p-4 space-y-4 hidden">
-            
-            <!-- Menu Navigasi Sub Kas -->
             <div class="flex bg-white rounded-xl p-1 shadow border text-xs font-bold">
                 <button onclick="switchKasSubTab('dana-sosial')" id="subnav-dana-sosial" class="flex-1 py-2 rounded-lg text-center bg-blue-600 text-white">❤️ Dana Sosial</button>
                 <button onclick="switchKasSubTab('pengeluaran')" id="subnav-pengeluaran" class="flex-1 py-2 rounded-lg text-center text-gray-600">💸 Pengeluaran</button>
@@ -250,7 +248,6 @@
                     <i class="fas fa-heart text-2xl text-rose-500"></i>
                 </div>
 
-                <!-- Input Admin Dana Sosial -->
                 <div id="admin-dansos-form" class="bg-white p-3 rounded-xl shadow border hidden space-y-2">
                     <p class="text-xs font-bold text-rose-600"><i class="fas fa-plus-circle mr-1"></i> Input Dana Sosial Baru (Admin)</p>
                     <div class="grid grid-cols-2 gap-2">
@@ -291,7 +288,6 @@
                     <i class="fas fa-wallet text-2xl text-orange-500"></i>
                 </div>
 
-                <!-- Input Admin Pengeluaran -->
                 <div id="admin-pengeluaran-form" class="bg-white p-3 rounded-xl shadow border hidden space-y-2">
                     <p class="text-xs font-bold text-orange-600"><i class="fas fa-minus-circle mr-1"></i> Input Pengeluaran Baru (Admin)</p>
                     <input type="text" id="input-ket-pengeluaran" placeholder="Keterangan Pengeluaran..." class="w-full p-2 border rounded-lg text-xs">
@@ -344,7 +340,6 @@
         <div id="tab-kegiatan" class="p-4 hidden space-y-4">
             <h2 class="text-lg font-bold text-gray-800">Kegiatan Anggota</h2>
 
-            <!-- Form Upload Kegiatan -->
             <div class="bg-white p-3 rounded-xl shadow border space-y-2">
                 <p class="text-xs font-bold text-blue-600"><i class="fas fa-plus-circle mr-1"></i> Upload Kegiatan Baru</p>
                 <input type="text" id="input-judul-kegiatan" placeholder="Judul Kegiatan..." class="w-full p-2 border rounded-lg text-xs">
@@ -357,7 +352,6 @@
                 <button onclick="tambahKegiatan()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold text-xs">Simpan & Publikasikan</button>
             </div>
 
-            <!-- Riwayat Kegiatan List -->
             <div class="space-y-3">
                 <p class="text-xs font-bold text-gray-600"><i class="fas fa-history mr-1"></i> Riwayat Kegiatan</p>
                 <div id="list-riwayat-kegiatan" class="space-y-3">
@@ -418,7 +412,6 @@
         let pengeluaranList = JSON.parse(localStorage.getItem('pengeluaranList')) || [];
         let danaSosialList = JSON.parse(localStorage.getItem('danaSosialList')) || [];
         
-        // Judul Kegiatan diubah jadi "Silaturahmi" (Arisan dihapus)
         let kegiatanList = JSON.parse(localStorage.getItem('kegiatanList')) || [
             {
                 id: 1,
@@ -440,7 +433,6 @@
             }
             document.querySelectorAll('.current-year-txt').forEach(el => el.innerText = currentYear);
 
-            // Populate Checkbox Bulan Laporan (Jan - Des)
             const boxContainer = document.getElementById('container-checkbox-bulan');
             boxContainer.innerHTML = '';
             bulanList.forEach(b => {
@@ -482,7 +474,6 @@
             document.getElementById('app').classList.add('hidden');
         }
 
-        // Fitur Modal & Ganti Password
         function openModalPass() {
             document.getElementById('label-role-pass').innerText = `(${currentRole.toUpperCase()})`;
             document.getElementById('pass-lama-input').value = '';
@@ -534,7 +525,6 @@
             const year = document.getElementById('filter-tahun').value;
             const fileInput = document.getElementById('input-file-bukti');
 
-            // Ambil seluruh bulan yang dicentang
             const checkboxes = document.querySelectorAll('input[name="bulan_lapor"]:checked');
             const selectedBulans = Array.from(checkboxes).map(cb => cb.value);
 
@@ -547,7 +537,6 @@
                 reader.onload = function(e) {
                     const buktiBase64 = e.target.result;
                     
-                    // Simpan laporan untuk setiap bulan yang dipilih
                     selectedBulans.forEach(bln => {
                         const laporanBaru = { id: Date.now() + Math.random(), nama, nominal, bulan: bln, tahun: year, bukti: buktiBase64 };
                         laporanPending.push(laporanBaru);
@@ -679,21 +668,18 @@
             selectedYear = document.getElementById('filter-tahun').value || currentYear;
             const yearData = iuranData[selectedYear] || {};
 
-            // Render Table Header (Jan-Des)
             const headerTr = document.getElementById('tabel-iuran-header');
             headerTr.innerHTML = `<th class="p-2 border-b">No</th><th class="p-2 border-b sticky-col">Nama</th>`;
             bulanList.forEach(b => {
                 headerTr.innerHTML += `<th class="p-2 border-b text-center min-w-[65px]">${b}</th>`;
             });
 
-            // Calculate Totals
             let totalIuranMasuk = 0;
             let bayarBulanIniCount = 0;
             let totalIuranBulanIni = 0;
             const currentMonthIdx = new Date().getMonth();
             const currentMonthName = bulanList[currentMonthIdx];
 
-            // Render Tabel Iuran Body
             const tbody = document.getElementById('tabel-iuran-body');
             tbody.innerHTML = '';
 
@@ -724,14 +710,11 @@
                 tbody.innerHTML += rowHtml;
             });
 
-            // Calculate Totals Pengeluaran & Dansos
             const totalDansos = danaSosialList.reduce((sum, item) => sum + item.nom, 0);
             const totalPengeluaran = pengeluaranList.reduce((sum, item) => sum + item.nom, 0);
             const saldoAkhir = totalIuranMasuk - (totalPengeluaran + totalDansos);
 
-            // Update Dashboards
             document.getElementById('total-saldo-display').innerText = `Rp ${saldoAkhir.toLocaleString('id-ID')}`;
-            // Penggunaan satuan 'anggota'
             document.getElementById('stat-bayar-bulan').innerHTML = `${bayarBulanIniCount} / ${anggotaList.length} <span class="text-xs font-normal">anggota</span>`;
             document.getElementById('stat-iuran-bulan').innerText = `Rp ${totalIuranBulanIni.toLocaleString('id-ID')}`;
             document.getElementById('stat-total-iuran').innerText = `Rp ${totalIuranMasuk.toLocaleString('id-ID')}`;
@@ -740,13 +723,11 @@
             document.getElementById('total-dana-sosial-txt').innerText = `Rp ${totalDansos.toLocaleString('id-ID')}`;
             document.getElementById('total-pengeluaran-txt').innerText = `Rp ${totalPengeluaran.toLocaleString('id-ID')}`;
 
-            // Dropdown Lapor
             const selectNama = document.getElementById('input-nama');
             selectNama.innerHTML = '';
             anggotaList.sort().forEach(n => selectNama.innerHTML += `<option value="${n}">${n}</option>`);
             document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
 
-            // Admin Controls
             if(currentRole === 'admin') {
                 document.getElementById('admin-approval-panel').classList.remove('hidden');
                 document.getElementById('admin-tambah-anggota-form').classList.remove('hidden');
