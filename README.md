@@ -37,7 +37,7 @@
 
             <div class="mb-4 text-left">
                 <label class="block text-xs font-semibold text-gray-600 mb-1">Password</label>
-                <input type="password" id="password-input" placeholder="Password default: 12345" class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-blue-500 text-sm">
+                <input type="password" id="password-input" placeholder="••••••••" class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-blue-500 text-sm">
             </div>
 
             <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition text-sm">Masuk</button>
@@ -92,7 +92,7 @@
             <div class="bg-emerald-600 text-white p-4 rounded-2xl flex justify-between items-center shadow">
                 <div>
                     <p class="text-xs opacity-90">Saldo Kas Saat Ini</p>
-                    <p class="text-2xl font-bold" id="total-saldo-display">Rp 4.363.000</p>
+                    <p class="text-2xl font-bold" id="total-saldo-display">Rp 0</p>
                 </div>
                 <div class="w-10 h-10 bg-yellow-400 text-yellow-900 rounded-full flex items-center justify-center font-bold text-xl">$</div>
             </div>
@@ -109,19 +109,19 @@
             <div class="grid grid-cols-2 gap-3">
                 <div class="bg-blue-600 text-white p-3 rounded-2xl">
                     <p class="text-xs">Bayar Juli</p>
-                    <p class="text-xl font-bold mt-1">28 / 87 <span class="text-sm font-normal">kk</span></p>
+                    <p class="text-xl font-bold mt-1" id="stat-bayar-juli">0 / 0 <span class="text-xs font-normal">kk</span></p>
                 </div>
                 <div class="bg-purple-600 text-white p-3 rounded-2xl">
                     <p class="text-xs">Iuran Juli</p>
-                    <p class="text-xl font-bold mt-1">Rp 3.500.000</p>
+                    <p class="text-xl font-bold mt-1" id="stat-iuran-juli">Rp 0</p>
                 </div>
                 <div class="bg-sky-500 text-white p-3 rounded-2xl">
                     <p class="text-xs">Total Iuran Masuk</p>
-                    <p class="text-xl font-bold mt-1">Rp 28.000.000</p>
+                    <p class="text-xl font-bold mt-1" id="stat-total-iuran">Rp 0</p>
                 </div>
                 <div class="bg-orange-500 text-white p-3 rounded-2xl">
                     <p class="text-xs">Total Pengeluaran</p>
-                    <p class="text-xl font-bold mt-1">Rp 26.029.000</p>
+                    <p class="text-xl font-bold mt-1" id="stat-total-pengeluaran">Rp 0</p>
                 </div>
             </div>
 
@@ -134,22 +134,34 @@
             </div>
         </div>
 
-        <!-- TAB: IURAN -->
-        <div id="tab-iuran" class="p-4 hidden">
-            <h2 class="text-lg font-bold mb-3">Data Pembayaran Iuran</h2>
+        <!-- TAB: IURAN & KELOLA ANGGOTA -->
+        <div id="tab-iuran" class="p-4 hidden space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold">Data Pembayaran Iuran</h2>
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-bold" id="total-anggota-count">0 Anggota</span>
+            </div>
+
+            <!-- Form Tambah Anggota Khusus Admin -->
+            <div id="admin-tambah-anggota-form" class="bg-white p-3 rounded-xl shadow border hidden space-y-2">
+                <p class="text-xs font-bold text-gray-700"><i class="fas fa-user-plus mr-1"></i> Tambah Anggota Baru</p>
+                <div class="flex gap-2">
+                    <input type="text" id="input-nama-anggota-baru" placeholder="Nama Anggota..." class="w-full p-2 border rounded-lg text-xs">
+                    <button onclick="tambahAnggota()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-bold">Tambah</button>
+                </div>
+            </div>
+
             <div class="overflow-x-auto bg-white rounded-xl shadow border">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-blue-600 text-white">
                         <tr>
                             <th class="p-2">No</th>
                             <th class="p-2">Nama</th>
-                            <th class="p-2">Jan</th>
-                            <th class="p-2">Feb</th>
+                            <th class="p-2 text-center">Juli</th>
+                            <th class="p-2 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y">
-                        <tr><td class="p-2">1</td><td class="p-2 font-semibold">Budi Wheel</td><td class="p-2 text-green-600">✓</td><td class="p-2 text-green-600">✓</td></tr>
-                        <tr><td class="p-2">2</td><td class="p-2 font-semibold">Andi Wheel</td><td class="p-2 text-red-500">—</td><td class="p-2 text-green-600">✓</td></tr>
+                    <tbody id="tabel-iuran-body" class="divide-y">
+                        <!-- Dynamic Content via JS -->
                     </tbody>
                 </table>
             </div>
@@ -160,20 +172,22 @@
             <h2 class="text-lg font-bold">Lapor Pembayaran</h2>
             <form onsubmit="kirimLaporan(event)" class="bg-white p-4 rounded-xl shadow space-y-3">
                 <div>
-                    <label class="text-xs font-semibold text-gray-600">Nama Anggota</label>
-                    <input type="text" id="input-nama" placeholder="Masukkan nama..." required class="w-full p-2 border rounded-lg text-sm">
+                    <label class="text-xs font-semibold text-gray-600">Pilih Nama Anggota</label>
+                    <select id="input-nama" required class="w-full p-2 border rounded-lg text-sm">
+                        <!-- Options generated dynamically -->
+                    </select>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="text-xs font-semibold text-gray-600">Nominal (Rp)</label>
-                        <input type="number" id="input-nominal" placeholder="50000" required class="w-full p-2 border rounded-lg text-sm">
+                        <input type="number" id="input-nominal" value="50000" required class="w-full p-2 border rounded-lg text-sm">
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-600">Bulan</label>
                         <select id="input-bulan" class="w-full p-2 border rounded-lg text-sm">
-                            <option>Juli</option>
-                            <option>Agustus</option>
-                            <option>September</option>
+                            <option value="Juli">Juli</option>
+                            <option value="Agustus">Agustus</option>
+                            <option value="September">September</option>
                         </select>
                     </div>
                 </div>
@@ -185,12 +199,29 @@
             </form>
         </div>
 
-        <!-- TAB: KAS -->
-        <div id="tab-kas" class="p-4 hidden">
-            <h2 class="text-lg font-bold mb-3">Laporan Arus Kas</h2>
+        <!-- TAB: KAS & PENGELUARAN -->
+        <div id="tab-kas" class="p-4 space-y-4 hidden">
+            <h2 class="text-lg font-bold">Laporan Arus Kas</h2>
+            
+            <!-- Form Catat Pengeluaran Khusus Admin -->
+            <div id="admin-pengeluaran-form" class="bg-white p-3 rounded-xl shadow border hidden space-y-2">
+                <p class="text-xs font-bold text-red-600"><i class="fas fa-minus-circle mr-1"></i> Catat Pengeluaran Baru</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="input-ket-pengeluaran" placeholder="Keterangan..." class="p-2 border rounded-lg text-xs">
+                    <input type="number" id="input-nominal-pengeluaran" placeholder="Nominal (Rp)..." class="p-2 border rounded-lg text-xs">
+                </div>
+                <button onclick="tambahPengeluaran()" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-xs font-bold">Simpan Pengeluaran</button>
+            </div>
+
             <div class="bg-white p-4 rounded-xl shadow text-xs space-y-2">
-                <div class="flex justify-between border-b pb-2"><span>Pemasukan Juli:</span><span class="font-bold text-green-600">Rp 3.500.000</span></div>
-                <div class="flex justify-between border-b pb-2"><span>Pengeluaran Juli:</span><span class="font-bold text-red-600">Rp 1.200.000</span></div>
+                <div class="flex justify-between border-b pb-2"><span>Total Iuran Masuk:</span><span class="font-bold text-green-600" id="kas-iuran-masuk">Rp 0</span></div>
+                <div class="flex justify-between border-b pb-2"><span>Total Pengeluaran:</span><span class="font-bold text-red-600" id="kas-total-pengeluaran">Rp 0</span></div>
+                <div class="flex justify-between pt-1 font-bold text-sm"><span>Saldo Kas Saat Ini:</span><span class="text-blue-600" id="kas-saldo-akhir">Rp 0</span></div>
+            </div>
+
+            <h3 class="text-sm font-bold text-gray-700 mt-4">Riwayat Pengeluaran</h3>
+            <div id="riwayat-pengeluaran-list" class="space-y-2">
+                <!-- Dynamic List -->
             </div>
         </div>
 
@@ -233,14 +264,27 @@
     </div>
 
     <script>
-        // Data Default pada Sistem Storage Local
+        // Data Awal Anggota Keluarga Besar Wheel
+        const defaultAnggota = [
+            "Abdillah Zaqi", "Ade S", "Agus Winarno", "Akhmad Nurrokhim", "Alfa", "Amin S", "Ananta", "Anjasmara", 
+            "Apriyanto", "Arief W", "Asep S", "Bayu E.", "Beni", "Carmuto", "Diki R", "Dodi Eka S", "Erik", "Erwin", 
+            "Fajar A. M", "Falah", "Feri I", "Feri sn", "Gagas", "Ghofur", "Hadriansyahh", "Habil", "Hendra K", 
+            "Heri Kurniawan", "Indra Kamaju", "Indra S", "Juan", "Kemas", "Khamdani", "Luqmanul hakim", "Mirza", 
+            "M. Reynaldi", "Nanang Kurniawan", "Nicko apriyansyah", "Nurtri", "Okta Kamaju", "Rama", "Ragil", 
+            "Rahmat febrianto", "Redy Aprianto", "Rezon", "Rihdo", "Rismanto", "Rizqi Fajar", "Slamet J", "Srimarbowo", 
+            "Suherdyanto", "Suyatmo", "Titus", "Tur P.", "Wafiq", "Wahyu Luthfi", "Yogi I", "Yudiansyah", "Yudi H", 
+            "Yudi A", "Yusa"
+        ];
+
+        // Storage & State Management
+        let anggotaList = JSON.parse(localStorage.getItem('anggotaList')) || defaultAnggota;
         let passAnggota = localStorage.getItem('passAnggota') || '12345';
         let passAdmin = localStorage.getItem('passAdmin') || '12345';
         let currentRole = '';
 
-        let laporanPending = JSON.parse(localStorage.getItem('laporanPending')) || [
-            { id: 1, nama: 'Budi Wheel', nominal: 50000, bulan: 'Juli' }
-        ];
+        let iuranData = JSON.parse(localStorage.getItem('iuranData')) || {}; 
+        let laporanPending = JSON.parse(localStorage.getItem('laporanPending')) || [];
+        let pengeluaranList = JSON.parse(localStorage.getItem('pengeluaranList')) || [];
 
         function login() {
             const role = document.getElementById('role-select').value;
@@ -259,7 +303,7 @@
             document.getElementById('app').classList.remove('hidden');
             document.getElementById('user-role-label').innerText = currentRole;
             
-            renderAdminPanel();
+            updateAllData();
         }
 
         function logout() {
@@ -268,7 +312,6 @@
             document.getElementById('app').classList.add('hidden');
         }
 
-        // Fitur Modal Ganti Password
         function openModalPw() { document.getElementById('modal-password').classList.remove('hidden'); }
         function closeModalPw() { document.getElementById('modal-password').classList.add('hidden'); }
 
@@ -278,7 +321,7 @@
             const passAktif = currentRole === 'admin' ? passAdmin : passAnggota;
 
             if(pwLama !== passAktif) {
-                alert('Password lama Anda tidak cocok!');
+                alert('Password lama Anda salah!');
                 return;
             }
             if(pwBaru.trim() === '') {
@@ -300,80 +343,193 @@
             document.getElementById('pw-baru').value = '';
         }
 
-        // Fitur Laporan Anggota
+        function tambahAnggota() {
+            const namaInput = document.getElementById('input-nama-anggota-baru');
+            const nama = namaInput.value.trim();
+            if(!nama) return alert('Masukkan nama anggota!');
+
+            if(anggotaList.includes(nama)) return alert('Nama anggota sudah ada!');
+
+            anggotaList.push(nama);
+            localStorage.setItem('anggotaList', JSON.stringify(anggotaList));
+            namaInput.value = '';
+            updateAllData();
+            alert('Anggota berhasil ditambahkan!');
+        }
+
+        function hapusAnggota(nama) {
+            if(confirm(`Yakin ingin menghapus ${nama} dari daftar anggota?`)) {
+                anggotaList = anggotaList.filter(a => a !== nama);
+                localStorage.setItem('anggotaList', JSON.stringify(anggotaList));
+                updateAllData();
+            }
+        }
+
         function kirimLaporan(e) {
             e.preventDefault();
             const nama = document.getElementById('input-nama').value;
-            const nominal = document.getElementById('input-nominal').value;
+            const nominal = parseInt(document.getElementById('input-nominal').value);
             const bulan = document.getElementById('input-bulan').value;
 
-            const laporanBaru = {
-                id: Date.now(),
-                nama,
-                nominal: parseInt(nominal),
-                bulan
-            };
-
+            const laporanBaru = { id: Date.now(), nama, nominal, bulan };
             laporanPending.push(laporanBaru);
             localStorage.setItem('laporanPending', JSON.stringify(laporanPending));
             
             alert('Laporan berhasil terkirim! Menunggu konfirmasi Admin.');
-            document.getElementById('input-nama').value = '';
-            document.getElementById('input-nominal').value = '';
             switchTab('beranda');
-            renderAdminPanel();
-        }
-
-        // Render Panel khusus Admin untuk Konfirmasi/Hapus
-        function renderAdminPanel() {
-            const panel = document.getElementById('admin-approval-panel');
-            const container = document.getElementById('admin-laporan-list');
-
-            if (currentRole === 'admin') {
-                panel.classList.remove('hidden');
-                container.innerHTML = '';
-
-                if (laporanPending.length === 0) {
-                    container.innerHTML = '<p class="text-xs text-gray-500">Tidak ada laporan yang perlu disetujui.</p>';
-                    return;
-                }
-
-                laporanPending.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'bg-white p-2.5 rounded-lg border flex justify-between items-center text-xs';
-                    card.innerHTML = `
-                        <div>
-                            <p class="font-bold text-gray-800">${item.nama}</p>
-                            <p class="text-gray-500">Bulan: ${item.bulan} - Rp ${item.nominal.toLocaleString('id-ID')}</p>
-                        </div>
-                        <div class="flex space-x-1">
-                            <button onclick="setujuiLaporan(${item.id})" class="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700"><i class="fas fa-check"></i> Disetujui</button>
-                            <button onclick="hapusLaporan(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"><i class="fas fa-trash"></i> Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } else {
-                panel.classList.add('hidden');
-            }
+            updateAllData();
         }
 
         function setujuiLaporan(id) {
-            laporanPending = laporanPending.filter(item => item.id !== id);
-            localStorage.setItem('laporanPending', JSON.stringify(laporanPending));
-            alert('Laporan berhasil disetujui!');
-            renderAdminPanel();
+            const lap = laporanPending.find(item => item.id === id);
+            if(lap) {
+                if(!iuranData[lap.nama]) iuranData[lap.nama] = {};
+                iuranData[lap.nama][lap.bulan] = (iuranData[lap.nama][lap.bulan] || 0) + lap.nominal;
+                localStorage.setItem('iuranData', JSON.stringify(iuranData));
+
+                laporanPending = laporanPending.filter(item => item.id !== id);
+                localStorage.setItem('laporanPending', JSON.stringify(laporanPending));
+                
+                alert('Laporan disetujui! Data laporan dan saldo berhasil diperbarui.');
+                updateAllData();
+            }
         }
 
         function hapusLaporan(id) {
             if (confirm('Apakah Anda yakin ingin menghapus laporan ini?')) {
                 laporanPending = laporanPending.filter(item => item.id !== id);
                 localStorage.setItem('laporanPending', JSON.stringify(laporanPending));
-                renderAdminPanel();
+                updateAllData();
             }
         }
 
-        // Switcher Tab Navigasi
+        function tambahPengeluaran() {
+            const ket = document.getElementById('input-ket-pengeluaran').value.trim();
+            const nominal = parseInt(document.getElementById('input-nominal-pengeluaran').value);
+
+            if(!ket || !nominal) return alert('Isi keterangan dan nominal pengeluaran!');
+
+            pengeluaranList.push({ id: Date.now(), ket, nominal, tanggal: new Date().toLocaleDateString('id-ID') });
+            localStorage.setItem('pengeluaranList', JSON.stringify(pengeluaranList));
+
+            document.getElementById('input-ket-pengeluaran').value = '';
+            document.getElementById('input-nominal-pengeluaran').value = '';
+            updateAllData();
+            alert('Pengeluaran berhasil dicatat!');
+        }
+
+        function updateAllData() {
+            // Calculate Total Iuran
+            let totalIuranMasuk = 0;
+            let bayarJuliCount = 0;
+            let totalIuranJuli = 0;
+
+            Object.keys(iuranData).forEach(nama => {
+                Object.keys(iuranData[nama]).forEach(bln => {
+                    totalIuranMasuk += iuranData[nama][bln];
+                    if(bln === 'Juli' && iuranData[nama][bln] > 0) {
+                        bayarJuliCount++;
+                        totalIuranJuli += iuranData[nama][bln];
+                    }
+                });
+            });
+
+            // Calculate Total Pengeluaran
+            let totalPengeluaran = pengeluaranList.reduce((sum, item) => sum + item.nominal, 0);
+            let saldoAkhir = totalIuranMasuk - totalPengeluaran;
+
+            // Render Dashboard Stats
+            document.getElementById('total-saldo-display').innerText = `Rp ${saldoAkhir.toLocaleString('id-ID')}`;
+            document.getElementById('stat-bayar-juli').innerHTML = `${bayarJuliCount} / ${anggotaList.length} <span class="text-xs font-normal">kk</span>`;
+            document.getElementById('stat-iuran-juli').innerText = `Rp ${totalIuranJuli.toLocaleString('id-ID')}`;
+            document.getElementById('stat-total-iuran').innerText = `Rp ${totalIuranMasuk.toLocaleString('id-ID')}`;
+            document.getElementById('stat-total-pengeluaran').innerText = `Rp ${totalPengeluaran.toLocaleString('id-ID')}`;
+
+            // Kas Page Stats
+            document.getElementById('kas-iuran-masuk').innerText = `Rp ${totalIuranMasuk.toLocaleString('id-ID')}`;
+            document.getElementById('kas-total-pengeluaran').innerText = `Rp ${totalPengeluaran.toLocaleString('id-ID')}`;
+            document.getElementById('kas-saldo-akhir').innerText = `Rp ${saldoAkhir.toLocaleString('id-ID')}`;
+
+            // Render Member Dropdown
+            const selectNama = document.getElementById('input-nama');
+            selectNama.innerHTML = '';
+            anggotaList.sort().forEach(nama => {
+                selectNama.innerHTML += `<option value="${nama}">${nama}</option>`;
+            });
+
+            // Render Tabel Iuran
+            const tabelBody = document.getElementById('tabel-iuran-body');
+            tabelBody.innerHTML = '';
+            document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
+
+            anggotaList.forEach((nama, idx) => {
+                const lunasJuli = iuranData[nama] && iuranData[nama]['Juli'] > 0;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-2">${idx + 1}</td>
+                    <td class="p-2 font-semibold text-gray-800">${nama}</td>
+                    <td class="p-2 text-center font-bold">${lunasJuli ? '<span class="text-green-600">✓</span>' : '<span class="text-gray-300">—</span>'}</td>
+                    <td class="p-2 text-center">
+                        ${currentRole === 'admin' ? `<button onclick="hapusAnggota('${nama}') text-red-500 hover:text-red-700"><i class="fas fa-user-minus"></i></button>` : '-'}
+                    </td>
+                `;
+                tabelBody.appendChild(tr);
+            });
+
+            // Admin Toggle Panels
+            if(currentRole === 'admin') {
+                document.getElementById('admin-approval-panel').classList.remove('hidden');
+                document.getElementById('admin-tambah-anggota-form').classList.remove('hidden');
+                document.getElementById('admin-pengeluaran-form').classList.remove('hidden');
+
+                // Render Admin Approval Pending List
+                const container = document.getElementById('admin-laporan-list');
+                container.innerHTML = '';
+
+                if (laporanPending.length === 0) {
+                    container.innerHTML = '<p class="text-xs text-gray-500">Tidak ada laporan yang perlu disetujui.</p>';
+                } else {
+                    laporanPending.forEach(item => {
+                        container.innerHTML += `
+                            <div class="bg-white p-2.5 rounded-lg border flex justify-between items-center text-xs shadow-sm">
+                                <div>
+                                    <p class="font-bold text-gray-800">${item.nama}</p>
+                                    <p class="text-gray-500">Bulan: ${item.bulan} - Rp ${item.nominal.toLocaleString('id-ID')}</p>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <button onclick="setujuiLaporan(${item.id})" class="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 font-bold"><i class="fas fa-check"></i> Setujui</button>
+                                    <button onclick="hapusLaporan(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } else {
+                document.getElementById('admin-approval-panel').classList.add('hidden');
+                document.getElementById('admin-tambah-anggota-form').classList.add('hidden');
+                document.getElementById('admin-pengeluaran-form').classList.add('hidden');
+            }
+
+            // Render Riwayat Pengeluaran List
+            const expList = document.getElementById('riwayat-pengeluaran-list');
+            expList.innerHTML = '';
+            if(pengeluaranList.length === 0) {
+                expList.innerHTML = '<p class="text-xs text-gray-400">Belum ada data pengeluaran.</p>';
+            } else {
+                pengeluaranList.slice().reverse().forEach(exp => {
+                    expList.innerHTML += `
+                        <div class="bg-white p-2.5 rounded-xl shadow-sm border text-xs flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-gray-800">${exp.ket}</p>
+                                <p class="text-gray-400 text-[10px]">${exp.tanggal}</p>
+                            </div>
+                            <span class="font-bold text-red-600">- Rp ${exp.nominal.toLocaleString('id-ID')}</span>
+                        </div>
+                    `;
+                });
+            }
+        }
+
         function switchTab(tabName) {
             const tabs = ['beranda', 'iuran', 'lapor', 'kas', 'kegiatan'];
             tabs.forEach(tab => {
