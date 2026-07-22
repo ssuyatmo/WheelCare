@@ -173,20 +173,9 @@
                 <table class="w-full text-left text-xs border-collapse">
                     <thead class="bg-blue-600 text-white">
                         <tr id="tabel-iuran-header">
-                            <th class="p-2 border-b text-center sticky-col-no w-8">No</th>
-                            <th class="p-2 border-b sticky-col-nama min-w-[130px]">Nama</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Januari</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Februari</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Maret</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">April</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Mei</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Juni</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Juli</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Agustus</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">September</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Oktober</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">November</th>
-                            <th class="p-2 border-b text-center min-w-[75px]">Desember</th>
+                            <th class="p-2.5 border-b border-blue-500 text-center sticky-col-no w-8">No</th>
+                            <th class="p-2.5 border-b border-blue-500 sticky-col-nama min-w-[130px]">Nama</th>
+                            <!-- Di-render dinamis via JavaScript dari Januari s/d Desember -->
                         </tr>
                     </thead>
                     <tbody id="tabel-iuran-body" class="divide-y">
@@ -420,6 +409,17 @@
         const currentYear = new Date().getFullYear();
         let selectedYear = currentYear;
 
+        function renderHeaderIuran() {
+            const headerRow = document.getElementById('tabel-iuran-header');
+            headerRow.innerHTML = `
+                <th class="p-2.5 border-b border-blue-500 text-center sticky-col-no w-8">No</th>
+                <th class="p-2.5 border-b border-blue-500 sticky-col-nama min-w-[130px]">Nama</th>
+            `;
+            bulanList.forEach(bulan => {
+                headerRow.innerHTML += `<th class="p-2.5 border-b border-blue-500 text-center min-w-[85px] font-semibold">${bulan}</th>`;
+            });
+        }
+
         function initYearsAndMonths() {
             const selectFilter = document.getElementById('filter-tahun');
             selectFilter.innerHTML = '';
@@ -440,6 +440,7 @@
             });
 
             document.getElementById('input-tgl-kegiatan').valueAsDate = new Date();
+            renderHeaderIuran();
         }
 
         function login() {
@@ -745,6 +746,9 @@
                     `;
                 });
             }
+
+            // Ensure header bulan di-render ulang
+            renderHeaderIuran();
 
             // Render Tabel Iuran
             document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
