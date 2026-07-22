@@ -1,4 +1,3 @@
-
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +28,6 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 bg-gradient-to-b from-blue-600 to-blue-800 z-50 flex flex-col items-center justify-center p-4">
         <div class="text-center text-white mb-6">
-            <!-- LOGO PERTAMA (VEKTOR BIRU-KUNING) -->
             <div class="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg border-4 border-white text-blue-900 font-black text-3xl tracking-tighter">
                 <i class="fas fa-users text-4xl text-blue-900"></i>
             </div>
@@ -58,26 +56,6 @@
         </div>
     </div>
 
-    <!-- MODAL GANTI PASSWORD -->
-    <div id="modal-ganti-pass" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-xl relative">
-            <button onclick="closeModalPass()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-lg">&times;</button>
-            <h3 class="font-bold text-gray-800 text-sm mb-3"><i class="fas fa-key mr-1 text-blue-600"></i> Ganti Password <span id="label-role-pass"></span></h3>
-            
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Password Lama</label>
-                    <input type="password" id="pass-lama-input" placeholder="••••••••" class="w-full p-2 border rounded-lg text-xs">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Password Baru</label>
-                    <input type="password" id="pass-baru-input" placeholder="••••••••" class="w-full p-2 border rounded-lg text-xs">
-                </div>
-                <button onclick="simpanPasswordBaru()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold">Simpan Password Baru</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL BUKTI TRANSFER & FOTO KEGIATAN -->
     <div id="modal-bukti" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-xl relative">
@@ -97,7 +75,6 @@
         <div class="bg-blue-600 text-white p-4 rounded-b-2xl shadow-lg">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center space-x-3">
-                    <!-- LOGO HEADER PERTAMA -->
                     <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center border-2 border-white text-blue-900 font-bold">
                         <i class="fas fa-users text-lg"></i>
                     </div>
@@ -107,7 +84,6 @@
                     </div>
                 </div>
                 <div class="flex space-x-1">
-                    <button onclick="openModalPass()" title="Ganti Password" class="bg-yellow-500 p-2 rounded-lg text-xs hover:bg-yellow-600 text-white font-bold"><i class="fas fa-key"></i></button>
                     <button onclick="logout()" title="Keluar" class="bg-red-500 p-2 rounded-lg text-xs hover:bg-red-600"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
@@ -172,7 +148,7 @@
         <!-- TAB: IURAN -->
         <div id="tab-iuran" class="p-4 hidden space-y-4">
             <div class="flex justify-between items-center">
-                <h2 class="text-lg font-bold">Laporan Iuran Warga</h2>
+                <h2 class="text-lg font-bold">Laporan Iuran Anggota</h2>
                 <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-bold" id="total-anggota-count">0 Anggota</span>
             </div>
 
@@ -214,7 +190,6 @@
                     <input type="number" id="input-nominal" value="50000" required class="w-full p-2 border rounded-lg text-sm">
                 </div>
                 
-                <!-- Pilihan Bulan Januari - Desember (Multiselect Checkbox) -->
                 <div>
                     <label class="text-xs font-semibold text-gray-600 mb-1 block">Pilih Bulan (Bisa Lebih Dari Satu):</label>
                     <div id="container-checkbox-bulan" class="grid grid-cols-3 gap-2 bg-gray-50 p-2.5 rounded-lg border max-h-40 overflow-y-auto">
@@ -403,7 +378,7 @@
         const bulanList = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
         let anggotaList = JSON.parse(localStorage.getItem('anggotaList')) || defaultAnggota;
-        let passAnggota = localStorage.getItem('passAnggota') || '12345';
+        let passAnggota = 'wheel123'; // Password diganti menjadi wheel123
         let passAdmin = localStorage.getItem('passAdmin') || 'Mo12345';
         let currentRole = '';
 
@@ -472,37 +447,6 @@
             document.getElementById('password-input').value = '';
             document.getElementById('login-screen').classList.remove('hidden');
             document.getElementById('app').classList.add('hidden');
-        }
-
-        function openModalPass() {
-            document.getElementById('label-role-pass').innerText = `(${currentRole.toUpperCase()})`;
-            document.getElementById('pass-lama-input').value = '';
-            document.getElementById('pass-baru-input').value = '';
-            document.getElementById('modal-ganti-pass').classList.remove('hidden');
-        }
-
-        function closeModalPass() {
-            document.getElementById('modal-ganti-pass').classList.add('hidden');
-        }
-
-        function simpanPasswordBaru() {
-            const pwLama = document.getElementById('pass-lama-input').value;
-            const pwBaru = document.getElementById('pass-baru-input').value.trim();
-
-            if(!pwBaru) return alert('Password baru tidak boleh kosong!');
-
-            if(currentRole === 'anggota') {
-                if(pwLama !== passAnggota) return alert('Password lama salah!');
-                passAnggota = pwBaru;
-                localStorage.setItem('passAnggota', passAnggota);
-            } else {
-                if(pwLama !== passAdmin) return alert('Password lama salah!');
-                passAdmin = pwBaru;
-                localStorage.setItem('passAdmin', passAdmin);
-            }
-
-            alert('Password berhasil diperbarui!');
-            closeModalPass();
         }
 
         function tambahAnggota() {
@@ -579,50 +523,119 @@
             if (confirm('Yakin hapus laporan ini?')) {
                 laporanPending = laporanPending.filter(item => item.id !== id);
                 localStorage.setItem('laporanPending', JSON.stringify(laporanPending));
+                alert('Laporan pending berhasil dihapus!');
                 updateAllData();
             }
         }
 
+        // Fungsi Admin untuk menghapus laporan iuran yang telah disimpan
+        function hapusIuranSelesai(tahun, nama, bulan) {
+            if (confirm(`Hapus data iuran ${nama} untuk bulan ${bulan} ${tahun}?`)) {
+                if (iuranData[tahun] && iuranData[tahun][nama] && iuranData[tahun][nama][bulan]) {
+                    delete iuranData[tahun][nama][bulan];
+                    localStorage.setItem('iuranData', JSON.stringify(iuranData));
+                    alert('Data iuran berhasil dihapus!');
+                    updateAllData();
+                }
+            }
+        }
+
+        function showBukti(src, ket) {
+            document.getElementById('img-bukti-target').src = src;
+            document.getElementById('txt-bukti-ket').innerText = ket || '';
+            document.getElementById('modal-bukti').classList.remove('hidden');
+        }
+
+        function closeModalBukti() {
+            document.getElementById('modal-bukti').classList.add('hidden');
+        }
+
+        function switchTab(tab) {
+            ['beranda', 'iuran', 'lapor', 'kas', 'kegiatan'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).classList.remove('active-tab');
+            });
+
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`btn-${tab}`).classList.add('active-tab');
+        }
+
+        function switchKasSubTab(sub) {
+            ['dana-sosial', 'pengeluaran', 'laporan-kas'].forEach(s => {
+                document.getElementById(`kas-sub-${s}`).classList.add('hidden');
+                const btn = document.getElementById(`subnav-${s}`);
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-gray-600');
+            });
+
+            document.getElementById(`kas-sub-${sub}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`subnav-${sub}`);
+            activeBtn.classList.add('bg-blue-600', 'text-white');
+            activeBtn.classList.remove('text-gray-600');
+        }
+
         function tambahDanaSosial() {
-            const kat = document.getElementById('input-kategori-dansos').value;
-            const nom = parseInt(document.getElementById('input-nominal-dansos').value);
+            const kategori = document.getElementById('input-kategori-dansos').value;
+            const nominal = parseInt(document.getElementById('input-nominal-dansos').value);
             const ket = document.getElementById('input-ket-dansos').value.trim();
+            const year = document.getElementById('filter-tahun').value;
 
-            if(!nom || !ket) return alert('Isi nominal dan keterangan!');
+            if(!nominal || !ket) return alert('Lengkapi data dana sosial!');
 
-            danaSosialList.push({ id: Date.now(), kat, nom, ket, tgl: new Date().toLocaleDateString('id-ID') });
+            const baru = {
+                id: Date.now(),
+                tgl: new Date().toISOString().split('T')[0],
+                kategori,
+                nominal,
+                ket,
+                tahun: year
+            };
+
+            danaSosialList.push(baru);
             localStorage.setItem('danaSosialList', JSON.stringify(danaSosialList));
-
+            
             document.getElementById('input-nominal-dansos').value = '';
             document.getElementById('input-ket-dansos').value = '';
+            
+            alert('Dana sosial berhasil disimpan!');
             updateAllData();
-            alert('Dana Sosial berhasil dicatat!');
         }
 
         function tambahPengeluaran() {
             const ket = document.getElementById('input-ket-pengeluaran').value.trim();
-            const nom = parseInt(document.getElementById('input-nominal-pengeluaran').value);
+            const nominal = parseInt(document.getElementById('input-nominal-pengeluaran').value);
             const fileInput = document.getElementById('input-bukti-pengeluaran');
+            const year = document.getElementById('filter-tahun').value;
 
-            if(!ket || !nom) return alert('Isi keterangan dan nominal pengeluaran!');
+            if(!nominal || !ket) return alert('Lengkapi data pengeluaran!');
 
-            const processSave = (buktiUrl = '') => {
-                pengeluaranList.push({ id: Date.now(), ket, nom, bukti: buktiUrl, tgl: new Date().toLocaleDateString('id-ID') });
+            const saveProcess = (buktiBase64 = "") => {
+                const baru = {
+                    id: Date.now(),
+                    tgl: new Date().toISOString().split('T')[0],
+                    ket,
+                    nominal,
+                    bukti: buktiBase64,
+                    tahun: year
+                };
+
+                pengeluaranList.push(baru);
                 localStorage.setItem('pengeluaranList', JSON.stringify(pengeluaranList));
 
                 document.getElementById('input-ket-pengeluaran').value = '';
                 document.getElementById('input-nominal-pengeluaran').value = '';
                 fileInput.value = '';
+
+                alert('Pengeluaran berhasil disimpan!');
                 updateAllData();
-                alert('Pengeluaran berhasil dicatat!');
             };
 
             if(fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = (e) => processSave(e.target.result);
+                reader.onload = e => saveProcess(e.target.result);
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                processSave('');
+                saveProcess();
             }
         }
 
@@ -632,129 +645,53 @@
             const desc = document.getElementById('input-desc-kegiatan').value.trim();
             const fileInput = document.getElementById('input-foto-kegiatan');
 
-            if(!judul || !tgl || !desc) return alert('Lengkapi judul, tanggal, dan deskripsi!');
+            if(!judul || !tgl || !desc) return alert('Lengkapi detail kegiatan!');
 
-            const saveKegiatan = (fotoUrl = '') => {
-                kegiatanList.push({ id: Date.now(), judul, tgl, desc, foto: fotoUrl });
+            const saveKegiatan = (fotoBase64 = "") => {
+                const newKegiatan = {
+                    id: Date.now(),
+                    judul,
+                    tgl,
+                    desc,
+                    foto: fotoBase64
+                };
+
+                kegiatanList.unshift(newKegiatan);
                 localStorage.setItem('kegiatanList', JSON.stringify(kegiatanList));
 
                 document.getElementById('input-judul-kegiatan').value = '';
                 document.getElementById('input-desc-kegiatan').value = '';
                 fileInput.value = '';
-                updateAllData();
+
                 alert('Kegiatan berhasil ditambahkan!');
+                updateAllData();
             };
 
             if(fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = (e) => saveKegiatan(e.target.result);
+                reader.onload = e => saveKegiatan(e.target.result);
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                saveKegiatan('');
+                saveKegiatan();
             }
         }
 
-        function showBuktiModal(imgSrc, ketStr) {
-            document.getElementById('img-bukti-target').src = imgSrc;
-            document.getElementById('txt-bukti-ket').innerText = ketStr;
-            document.getElementById('modal-bukti').classList.remove('hidden');
-        }
-
-        function closeModalBukti() {
-            document.getElementById('modal-bukti').classList.add('hidden');
-        }
-
         function updateAllData() {
-            selectedYear = document.getElementById('filter-tahun').value || currentYear;
-            const yearData = iuranData[selectedYear] || {};
-
-            const headerTr = document.getElementById('tabel-iuran-header');
-            headerTr.innerHTML = `<th class="p-2 border-b">No</th><th class="p-2 border-b sticky-col">Nama</th>`;
-            bulanList.forEach(b => {
-                headerTr.innerHTML += `<th class="p-2 border-b text-center min-w-[65px]">${b}</th>`;
-            });
-
-            let totalIuranMasuk = 0;
-            let bayarBulanIniCount = 0;
-            let totalIuranBulanIni = 0;
-            const currentMonthIdx = new Date().getMonth();
-            const currentMonthName = bulanList[currentMonthIdx];
-
-            const tbody = document.getElementById('tabel-iuran-body');
-            tbody.innerHTML = '';
-
-            anggotaList.forEach((nama, idx) => {
-                const userYearData = yearData[nama] || {};
-                let rowHtml = `<tr><td class="p-2 text-gray-500">${idx+1}</td><td class="p-2 font-semibold text-gray-800 sticky-col">${nama}</td>`;
-
-                bulanList.forEach(b => {
-                    const pay = userYearData[b];
-                    if(pay && pay.nominal > 0) {
-                        totalIuranMasuk += pay.nominal;
-                        if(b === currentMonthName) {
-                            bayarBulanIniCount++;
-                            totalIuranBulanIni += pay.nominal;
-                        }
-                        rowHtml += `
-                            <td class="p-2 text-center">
-                                <div class="text-green-600 font-bold">✓</div>
-                                ${pay.bukti ? `<button onclick="showBuktiModal('${pay.bukti}', '${nama} - ${b}')" class="text-[9px] bg-blue-100 text-blue-700 px-1 rounded hover:bg-blue-200">Bukti</button>` : ''}
-                            </td>
-                        `;
-                    } else {
-                        rowHtml += `<td class="p-2 text-center text-gray-300">—</td>`;
-                    }
-                });
-
-                rowHtml += `</tr>`;
-                tbody.innerHTML += rowHtml;
-            });
-
-            const totalDansos = danaSosialList.reduce((sum, item) => sum + item.nom, 0);
-            const totalPengeluaran = pengeluaranList.reduce((sum, item) => sum + item.nom, 0);
-            const saldoAkhir = totalIuranMasuk - (totalPengeluaran + totalDansos);
-
-            document.getElementById('total-saldo-display').innerText = `Rp ${saldoAkhir.toLocaleString('id-ID')}`;
-            document.getElementById('stat-bayar-bulan').innerHTML = `${bayarBulanIniCount} / ${anggotaList.length} <span class="text-xs font-normal">anggota</span>`;
-            document.getElementById('stat-iuran-bulan').innerText = `Rp ${totalIuranBulanIni.toLocaleString('id-ID')}`;
-            document.getElementById('stat-total-iuran').innerText = `Rp ${totalIuranMasuk.toLocaleString('id-ID')}`;
-            document.getElementById('stat-total-pengeluaran').innerText = `Rp ${(totalPengeluaran + totalDansos).toLocaleString('id-ID')}`;
-
-            document.getElementById('total-dana-sosial-txt').innerText = `Rp ${totalDansos.toLocaleString('id-ID')}`;
-            document.getElementById('total-pengeluaran-txt').innerText = `Rp ${totalPengeluaran.toLocaleString('id-ID')}`;
-
+            selectedYear = document.getElementById('filter-tahun').value;
+            
+            // Render Select Nama Lapor
             const selectNama = document.getElementById('input-nama');
             selectNama.innerHTML = '';
-            anggotaList.sort().forEach(n => selectNama.innerHTML += `<option value="${n}">${n}</option>`);
-            document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
+            anggotaList.forEach(nama => {
+                selectNama.innerHTML += `<option value="${nama}">${nama}</option>`;
+            });
 
+            // Toggle Tampilan Admin/Anggota
             if(currentRole === 'admin') {
                 document.getElementById('admin-approval-panel').classList.remove('hidden');
                 document.getElementById('admin-tambah-anggota-form').classList.remove('hidden');
                 document.getElementById('admin-dansos-form').classList.remove('hidden');
                 document.getElementById('admin-pengeluaran-form').classList.remove('hidden');
-
-                const container = document.getElementById('admin-laporan-list');
-                container.innerHTML = '';
-                if (laporanPending.length === 0) {
-                    container.innerHTML = '<p class="text-xs text-gray-500">Tidak ada laporan yang perlu disetujui.</p>';
-                } else {
-                    laporanPending.forEach(item => {
-                        container.innerHTML += `
-                            <div class="bg-white p-2.5 rounded-lg border flex justify-between items-center text-xs shadow-sm">
-                                <div>
-                                    <p class="font-bold text-gray-800">${item.nama}</p>
-                                    <p class="text-gray-500">Bulan ${item.bulan} ${item.tahun} - Rp ${item.nominal.toLocaleString('id-ID')}</p>
-                                    ${item.bukti ? `<button onclick="showBuktiModal('${item.bukti}', '${item.nama}')" class="text-[10px] text-blue-600 underline">Lihat Bukti</button>` : ''}
-                                </div>
-                                <div class="flex space-x-1">
-                                    <button onclick="setujuiLaporan(${item.id})" class="bg-green-600 text-white px-2 py-1 rounded font-bold"><i class="fas fa-check"></i></button>
-                                    <button onclick="hapusLaporan(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
             } else {
                 document.getElementById('admin-approval-panel').classList.add('hidden');
                 document.getElementById('admin-tambah-anggota-form').classList.add('hidden');
@@ -762,134 +699,185 @@
                 document.getElementById('admin-pengeluaran-form').classList.add('hidden');
             }
 
-            renderDanaSosialBody();
-            renderPengeluaranBody();
-            renderLaporanKasBody();
-            renderRiwayatKegiatan();
-        }
+            // Render Laporan Pending (Admin Approval)
+            const listPending = document.getElementById('admin-laporan-list');
+            listPending.innerHTML = '';
+            const filteredPending = laporanPending.filter(l => l.tahun == selectedYear);
 
-        function renderDanaSosialBody() {
-            const body = document.getElementById('list-dana-sosial-body');
-            body.innerHTML = '';
-            if(danaSosialList.length === 0) {
-                body.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-gray-400">Belum ada penggunaan dana sosial</td></tr>`;
+            if(filteredPending.length === 0) {
+                listPending.innerHTML = `<p class="text-xs text-amber-700 italic">Tidak ada laporan pending di tahun ${selectedYear}.</p>`;
             } else {
-                danaSosialList.slice().reverse().forEach(d => {
-                    body.innerHTML += `
-                        <tr>
-                            <td class="p-2 text-gray-500">${d.tgl}</td>
-                            <td class="p-2 font-bold text-rose-600">${d.kat}</td>
-                            <td class="p-2">${d.ket}</td>
-                            <td class="p-2 text-right font-bold text-rose-700">Rp ${d.nom.toLocaleString('id-ID')}</td>
-                        </tr>
+                filteredPending.forEach(item => {
+                    listPending.innerHTML += `
+                        <div class="bg-white p-2.5 rounded-xl border flex justify-between items-center text-xs">
+                            <div>
+                                <p class="font-bold text-gray-800">${item.nama} <span class="text-blue-600">(${item.bulan} ${item.tahun})</span></p>
+                                <p class="text-gray-500 font-medium">Rp ${item.nominal.toLocaleString()}</p>
+                                <button onclick="showBukti('${item.bukti}', 'Bukti Bayar: ${item.nama} (${item.bulan})')" class="text-[10px] text-blue-600 font-bold underline mt-0.5">Lihat Bukti</button>
+                            </div>
+                            <div class="flex space-x-1">
+                                <button onclick="setujuiLaporan(${item.id})" class="bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold hover:bg-emerald-700"><i class="fas fa-check mr-1"></i> Setuju</button>
+                                <button onclick="hapusLaporan(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold hover:bg-red-600"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
                     `;
                 });
             }
-        }
 
-        function renderPengeluaranBody() {
-            const body = document.getElementById('list-pengeluaran-body');
-            body.innerHTML = '';
-            if(pengeluaranList.length === 0) {
-                body.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-gray-400">Belum ada pengeluaran operasional</td></tr>`;
-            } else {
-                pengeluaranList.slice().reverse().forEach(p => {
-                    body.innerHTML += `
-                        <tr>
-                            <td class="p-2 text-gray-500">${p.tgl}</td>
-                            <td class="p-2 font-medium">${p.ket}</td>
-                            <td class="p-2 text-right font-bold text-orange-600">Rp ${p.nom.toLocaleString('id-ID')}</td>
-                            <td class="p-2 text-center">
-                                ${p.bukti ? `<button onclick="showBuktiModal('${p.bukti}', '${p.ket}')" class="text-[10px] bg-orange-100 text-orange-700 px-1 rounded">Foto</button>` : '—'}
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-        }
-
-        function renderLaporanKasBody() {
-            const body = document.getElementById('tabel-laporan-kas-body');
-            body.innerHTML = '';
-            const yearData = iuranData[selectedYear] || {};
-            let currentKasSaldo = 0;
-
+            // Render Tabel Iuran
+            document.getElementById('total-anggota-count').innerText = `${anggotaList.length} Anggota`;
+            const headerRow = document.getElementById('tabel-iuran-header');
+            headerRow.innerHTML = `<th class="p-2 border-b">No</th><th class="p-2 border-b sticky-col">Nama</th>`;
             bulanList.forEach(b => {
-                let iuranBulan = 0;
-                Object.keys(yearData).forEach(n => {
-                    if(yearData[n][b] && yearData[n][b].nominal) {
-                        iuranBulan += yearData[n][b].nominal;
+                headerRow.innerHTML += `<th class="p-2 border-b text-center min-w-[50px]">${b}</th>`;
+            });
+
+            const bodyTable = document.getElementById('tabel-iuran-body');
+            bodyTable.innerHTML = '';
+
+            let totalIuranTahunIni = 0;
+            let currentMonthIdx = new Date().getMonth();
+            let countBayarBulanIni = 0;
+            let totalIuranBulanIni = 0;
+
+            const yearIuran = iuranData[selectedYear] || {};
+
+            anggotaList.forEach((nama, idx) => {
+                let rowHtml = `<tr>
+                    <td class="p-2 border-b text-center text-gray-500">${idx + 1}</td>
+                    <td class="p-2 border-b font-medium text-gray-800 sticky-col">${nama}</td>`;
+
+                bulanList.forEach((bln, mIdx) => {
+                    const dataBayar = yearIuran[nama] ? yearIuran[nama][bln] : null;
+
+                    if(dataBayar) {
+                        totalIuranTahunIni += dataBayar.nominal;
+                        if(mIdx === currentMonthIdx) {
+                            countBayarBulanIni++;
+                            totalIuranBulanIni += dataBayar.nominal;
+                        }
+
+                        let hapusBtn = currentRole === 'admin' ? `<button onclick="hapusIuranSelesai('${selectedYear}', '${nama}', '${bln}')" class="text-red-500 hover:text-red-700 ml-1" title="Hapus Laporan"><i class="fas fa-times-circle"></i></button>` : '';
+
+                        rowHtml += `
+                            <td class="p-2 border-b text-center">
+                                <div class="flex items-center justify-center">
+                                    <button onclick="showBukti('${dataBayar.bukti}', 'Bukti Bayar ${nama} (${bln})')" class="text-emerald-600 font-bold bg-emerald-50 px-1 rounded border border-emerald-200">
+                                        ✓
+                                    </button>
+                                    ${hapusBtn}
+                                </div>
+                            </td>
+                        `;
+                    } else {
+                        rowHtml += `<td class="p-2 border-b text-center text-gray-300">-</td>`;
                     }
                 });
 
-                currentKasSaldo += iuranBulan;
+                rowHtml += `</tr>`;
+                bodyTable.innerHTML += rowHtml;
+            });
 
-                body.innerHTML += `
+            // Summary Stats Calculation
+            document.getElementById('stat-bayar-bulan').innerHTML = `${countBayarBulanIni} / ${anggotaList.length} <span class="text-xs font-normal">anggota</span>`;
+            document.getElementById('stat-iuran-bulan').innerText = `Rp ${totalIuranBulanIni.toLocaleString()}`;
+            document.getElementById('stat-total-iuran').innerText = `Rp ${totalIuranTahunIni.toLocaleString()}`;
+
+            // Render Dana Sosial
+            const dansosBody = document.getElementById('list-dana-sosial-body');
+            dansosBody.innerHTML = '';
+            let totalDansos = 0;
+
+            const filteredDansos = danaSosialList.filter(d => d.tahun == selectedYear);
+            filteredDansos.forEach(item => {
+                totalDansos += item.nominal;
+                dansosBody.innerHTML += `
                     <tr>
-                        <td class="p-1.5 border font-semibold">${b}</td>
-                        <td class="p-1.5 border text-right text-green-600 font-medium">Rp ${iuranBulan.toLocaleString('id-ID')}</td>
-                        <td class="p-1.5 border text-right text-orange-600">-</td>
-                        <td class="p-1.5 border text-right text-rose-600">-</td>
-                        <td class="p-1.5 border text-right font-bold text-blue-600">Rp ${currentKasSaldo.toLocaleString('id-ID')}</td>
+                        <td class="p-2 border-b text-gray-500">${item.tgl}</td>
+                        <td class="p-2 border-b font-semibold text-rose-600">${item.kategori}</td>
+                        <td class="p-2 border-b text-gray-700">${item.ket}</td>
+                        <td class="p-2 border-b text-right font-bold text-gray-800">Rp ${item.nominal.toLocaleString()}</td>
                     </tr>
                 `;
             });
-        }
+            document.getElementById('total-dana-sosial-txt').innerText = `Rp ${totalDansos.toLocaleString()}`;
 
-        function renderRiwayatKegiatan() {
-            const container = document.getElementById('list-riwayat-kegiatan');
-            container.innerHTML = '';
+            // Render Pengeluaran
+            const pengeluaranBody = document.getElementById('list-pengeluaran-body');
+            pengeluaranBody.innerHTML = '';
+            let totalPengeluaran = 0;
 
-            if(kegiatanList.length === 0) {
-                container.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">Belum ada kegiatan tersimpan.</p>';
-                return;
-            }
+            const filteredPengeluaran = pengeluaranList.filter(p => p.tahun == selectedYear);
+            filteredPengeluaran.forEach(item => {
+                totalPengeluaran += item.nominal;
+                const btnBukti = item.bukti ? `<button onclick="showBukti('${item.bukti}', '${item.ket}')" class="text-blue-600 underline text-[10px]">Lihat</button>` : '-';
+                
+                pengeluaranBody.innerHTML += `
+                    <tr>
+                        <td class="p-2 border-b text-gray-500">${item.tgl}</td>
+                        <td class="p-2 border-b text-gray-800 font-medium">${item.ket}</td>
+                        <td class="p-2 border-b text-right font-bold text-orange-600">Rp ${item.nominal.toLocaleString()}</td>
+                        <td class="p-2 border-b text-center">${btnBukti}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('total-pengeluaran-txt').innerText = `Rp ${totalPengeluaran.toLocaleString()}`;
+            document.getElementById('stat-total-pengeluaran').innerText = `Rp ${(totalPengeluaran + totalDansos).toLocaleString()}`;
 
-            const sorted = kegiatanList.slice().sort((a, b) => new Date(b.tgl) - new Date(a.tgl));
+            // Saldo Kas
+            const totalSaldoKas = totalIuranTahunIni - (totalPengeluaran + totalDansos);
+            document.getElementById('total-saldo-display').innerText = `Rp ${totalSaldoKas.toLocaleString()}`;
 
-            sorted.forEach(k => {
-                const formattedDate = new Date(k.tgl).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                container.innerHTML += `
-                    <div class="bg-white p-3 rounded-xl shadow border text-xs space-y-2">
-                        <div class="flex justify-between items-start">
-                            <p class="font-bold text-blue-600 text-sm">${k.judul}</p>
-                            <span class="text-[10px] bg-blue-50 text-blue-600 font-semibold px-2 py-0.5 rounded-full"><i class="far fa-calendar-alt mr-1"></i>${formattedDate}</span>
+            // Render Laporan Arus Kas Bulanan
+            const kasBody = document.getElementById('tabel-laporan-kas-body');
+            kasBody.innerHTML = '';
+            let runningSaldo = 0;
+
+            bulanList.forEach(bln => {
+                let masukBln = 0;
+                anggotaList.forEach(nama => {
+                    if(yearIuran[nama] && yearIuran[nama][bln]) {
+                        masukBln += yearIuran[nama][bln].nominal;
+                    }
+                });
+
+                let keluarBln = filteredPengeluaran
+                    .filter(p => new Date(p.tgl).getMonth() === bulanList.indexOf(bln))
+                    .reduce((acc, curr) => acc + curr.nominal, 0);
+
+                let dansosBln = filteredDansos
+                    .filter(d => new Date(d.tgl).getMonth() === bulanList.indexOf(bln))
+                    .reduce((acc, curr) => acc + curr.nominal, 0);
+
+                runningSaldo += (masukBln - keluarBln - dansosBln);
+
+                kasBody.innerHTML += `
+                    <tr>
+                        <td class="p-1.5 border font-semibold text-gray-700">${bln}</td>
+                        <td class="p-1.5 border text-right text-emerald-600 font-medium">Rp ${masukBln.toLocaleString()}</td>
+                        <td class="p-1.5 border text-right text-orange-600 font-medium">Rp ${keluarBln.toLocaleString()}</td>
+                        <td class="p-1.5 border text-right text-rose-600 font-medium">Rp ${dansosBln.toLocaleString()}</td>
+                        <td class="p-1.5 border text-right font-bold text-gray-800">Rp ${runningSaldo.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            // Render Kegiatan
+            const listKegiatan = document.getElementById('list-riwayat-kegiatan');
+            listKegiatan.innerHTML = '';
+            kegiatanList.forEach(keg => {
+                const imgTag = keg.foto ? `<img src="${keg.foto}" onclick="showBukti('${keg.foto}', '${keg.judul}')" class="w-full h-32 object-cover rounded-lg cursor-pointer mb-2">` : '';
+                listKegiatan.innerHTML += `
+                    <div class="bg-white p-3 rounded-xl shadow border space-y-1">
+                        ${imgTag}
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-sm text-gray-800">${keg.judul}</h3>
+                            <span class="text-[10px] text-gray-400"><i class="far fa-calendar-alt mr-1"></i>${keg.tgl}</span>
                         </div>
-                        <p class="text-gray-700 leading-relaxed">${k.desc}</p>
-                        ${k.foto ? `
-                            <div class="mt-2">
-                                <button onclick="showBuktiModal('${k.foto}', '${k.judul}')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border flex items-center gap-1 font-medium">
-                                    <i class="fas fa-camera text-blue-600"></i> Lihat Foto Kegiatan
-                                </button>
-                            </div>
-                        ` : ''}
+                        <p class="text-xs text-gray-600 leading-relaxed">${keg.desc}</p>
                     </div>
                 `;
             });
-        }
-
-        function switchKasSubTab(sub) {
-            ['dana-sosial', 'pengeluaran', 'laporan-kas'].forEach(s => {
-                document.getElementById(`kas-sub-${s}`).classList.add('hidden');
-                const btn = document.getElementById(`subnav-${s}`);
-                btn.className = "flex-1 py-2 rounded-lg text-center text-gray-600";
-            });
-
-            document.getElementById(`kas-sub-${sub}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`subnav-${sub}`);
-            activeBtn.className = "flex-1 py-2 rounded-lg text-center bg-blue-600 text-white font-bold";
-        }
-
-        function switchTab(tabName) {
-            ['beranda', 'iuran', 'lapor', 'kas', 'kegiatan'].forEach(tab => {
-                document.getElementById(`tab-${tab}`).classList.add('hidden');
-                const btn = document.getElementById(`btn-${tab}`);
-                if(btn) btn.classList.remove('active-tab');
-            });
-
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`btn-${tabName}`);
-            if(activeBtn && tabName !== 'lapor') activeBtn.classList.add('active-tab');
         }
     </script>
 </body>
